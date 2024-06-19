@@ -25,29 +25,29 @@ The initial plan is to get a single tile working first. That way, the editor wil
 The task ahead will certainly be difficult, especially as I have yet to begin education in the chosen language: Java. This language has been chosen as it is the same language in use by MegaMek, and I hope to be able to offer my app to their development team in the future if they are interested in integration to their project. As the start point of development approaches, design documents will be drafted to detail the UI layout and functionality of different components of the final app.
 
 
-**Development stage 1 - (in progress)**
-	Design early draft of UI of core structure page - (complete) - Link to UI draft
-	Create a console app that allows manual entry of core fields and makes stat
+**Development stage 1 - (in progress)**\
+	Design early draft of UI of core structure page - (complete) - Link to UI draft\
+	Create a console app that allows manual entry of core fields and makes stat\
 	calculations based on those fields. - (in progress)
 
-**Stage 2 - (not started)**
-	Develop a UI that incorporates the fields and outputs the information
-	Create framework for additional features later in development
+**Stage 2 - (not started)**\
+	Develop a UI that incorporates the fields and outputs the information\
+	Create framework for additional features later in development\
 	Create hex-grid display in non-functional/interactive form
 
-**Stage 3 - (ns)**
-	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted
+**Stage 3 - (ns)**\
+	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted\
 	Create early draft of equipment page UI
 
-**Stage 4 - (ns)**
-	Begin large scale creation and/or importation of information for various equipment items
+**Stage 4 - (ns)**\
+	Begin large scale creation and/or importation of information for various equipment items\
 	Create test equipment items to make testing and troubleshooting easier
 
-**Stage 5 - (ns)**
-	Create method of selecting and storing information about individual hexes in the equipment menu
+**Stage 5 - (ns)**\
+	Create method of selecting and storing information about individual hexes in the equipment menu\
 	Display weight values of core components divided across each hex
 
-Stage 6 - (ns)
-	Create ability to save and load structures
-	Finish work on equipment and other needed modules
+**Stage 6 - (ns)**\
+	Create ability to save and load structures\
+	Finish work on equipment and other needed modules\
 	Prepare for initial build release
