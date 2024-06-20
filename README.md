@@ -27,8 +27,7 @@ The task ahead will certainly be difficult, especially as I have yet to begin ed
 
 **Development stage 1 - (in progress)**\
 	Design early draft of UI of core structure page - (complete)\
-	Create a console app that allows manual entry of core fields and makes stat\
-	calculations based on those fields. - (in progress)
+	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields. - (in progress)
 
 **Stage 2 - (not started)**\
 	Develop a UI that incorporates the fields and outputs the information\
