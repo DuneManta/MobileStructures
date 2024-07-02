@@ -7,6 +7,7 @@ public class Main {
         // To Do -- Turn all the various different iteration of structures into
         // class objects to simplify selection and variable assignment
 
+        // Stage 1
         // Needed parameters: Structure class, structure type, construction factor,
         // number of hexes, maximum height
 
@@ -107,10 +108,6 @@ public class Main {
                 break;
         }
 
-        // Get construction factor
-        System.out.print("\nSelect construction factor: (" + cfMin + "-" + cfMax + ") ");
-        int StrCF = Integer.parseInt(System.console().readLine());
-
         // Get number of hexes
         System.out.print("\nSelect number of hexes: (2-" + HexMax + ") ");
         int StrHex = Integer.parseInt(System.console().readLine());
@@ -118,6 +115,10 @@ public class Main {
         // Get max height
         System.out.print("\nSelect max height: (1-" + LevelMax + ") ");
         int StrHeight = Integer.parseInt(System.console().readLine());
+
+        // Get construction factor
+        System.out.print("\nSelect construction factor: (" + cfMin + "-" + cfMax + ") ");
+        int StrCF = Integer.parseInt(System.console().readLine());
 
         // Do initial per hex capacity calculations
         int HexWeight;
@@ -127,7 +128,15 @@ public class Main {
             HexWeight = StrCF * StrHeight;
         }
         int StrWeight = StrHex * HexWeight;
-        System.out.println("The maximum weight per hex is " + HexWeight + "tons.");
-        System.out.println("The maximum weight of the entire structure is " + StrWeight + "tons.");
+
+        // Output available tonnage
+        System.out.println("The maximum weight per hex is " +
+                String.format("%,d", HexWeight) + " tons.");
+        System.out.println("The maximum weight of the entire structure is " +
+                String.format("%,d", StrWeight) + " tons.");
+
+
+        // Stage 2
+        // Needed inputs: 
     }
 }
