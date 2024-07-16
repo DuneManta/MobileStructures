@@ -25,11 +25,11 @@ The initial plan is to get a single tile working first. That way, the editor wil
 The task ahead will certainly be difficult, especially as I have yet to begin education in the chosen language: Java. This language has been chosen as it is the same language in use by MegaMek, and I hope to be able to offer my app to their development team in the future if they are interested in integration to their project. As the start point of development approaches, design documents will be drafted to detail the UI layout and functionality of different components of the final app.
 
 
-**Development stage 1 - (in progress)**\
+**Development stage 1 - (complete)**\
 	Design early draft of UI of core structure page - (complete)\
-	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields. - (in progress)
+	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields. - (complete)
 
-**Stage 2 - (not started)**\
+**Stage 2 - (in progress)**\
 	Develop a UI that incorporates the fields and outputs the information\
 	Create framework for additional features later in development\
 	Create hex-grid display in non-functional/interactive form
@@ -50,3 +50,11 @@ The task ahead will certainly be difficult, especially as I have yet to begin ed
 	Create ability to save and load structures\
 	Finish work on equipment and other needed modules\
 	Prepare for initial build release
+
+ ***
+
+The application has reached a functional state! However there is currently no data verification, so inserting bad data will result in a crash. This, along with refactoring the code to use objects and classes, is something that will be worked on. For now, the only way to run the app is to load it into an IDE for Java and use the IDE console. I have been using IntelliJ Idea Community Edition for development, and as such is my recommendation for running the application.
+
+In order to run the application, you may need to ensure you version of Java is on par with what I have been using for development. This version is Java 17 - 17.0.11.9 provided by Adoptium. A guide for installing this version of Java can be found below this paragraph, created by the open source developers at the MegaMek project. This is the guide I followed to install my version of Java.
+
+https://github.com/MegaMek/megamek/wiki/Updating-to-Adoptium
