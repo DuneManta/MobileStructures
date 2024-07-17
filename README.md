@@ -58,3 +58,5 @@ The application has reached a functional state! However there is currently no da
 In order to run the application, you may need to ensure you version of Java is on par with what I have been using for development. This version is Java 17 - 17.0.11.9 provided by Adoptium. A guide for installing this version of Java can be found below this paragraph, created by the open source developers at the MegaMek project. This is the guide I followed to install my version of Java.
 
 https://github.com/MegaMek/megamek/wiki/Updating-to-Adoptium
+
+It is difficult to explain exactly what each different input choice means to those uninitiated with the Battletech tabletop game. Some fields are somewhat self explanitory, but others only make sense within the universe. In general, I have it set up so that the higher numbers mean bigger/stronger structures, while lower numbers will typically cooralate with smaller and lighter weight ones.
