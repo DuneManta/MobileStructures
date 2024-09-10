@@ -25,11 +25,12 @@ The initial plan is to get a single tile working first. That way, the editor wil
 The task ahead will certainly be difficult, especially as I have yet to begin education in the chosen language: Java. This language has been chosen as it is the same language in use by MegaMek, and I hope to be able to offer my app to their development team in the future if they are interested in integration to their project. As the start point of development approaches, design documents will be drafted to detail the UI layout and functionality of different components of the final app.
 
 
-**Development stage 1 - (complete)**\
+**Development stage 1 - (in progress)**\
 	Design early draft of UI of core structure page - (complete)\
-	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields. - (complete)
+	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields. - (complete)\
+ 	Refactor code to use a class model instead - (in progress)
 
-**Stage 2 - (in progress)**\
+**Stage 2 - (ns)**\
 	Develop a UI that incorporates the fields and outputs the information\
 	Create framework for additional features later in development\
 	Create hex-grid display in non-functional/interactive form
