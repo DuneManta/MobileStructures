@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Main {
     public static void main(String[] args) {
         // Basic input-output console
@@ -9,19 +11,22 @@ public class Main {
         // Needed parameters: Structure class, tech base, structure type, construction factor,
         // number of hexes, maximum height
 
+        // Create structure object
+        Structure newStruct = new Structure();
+
         // Get structure type
         System.out.print("Please select the type of structure: hanger (1), building (2), fortress (3) ");
-        int StrType = Integer.parseInt(System.console().readLine());
+        newStruct.setType(Integer.parseInt(System.console().readLine()));
 
         // Get tech base for later calculations in stage 2
         System.out.print("Please select the technology base: Inner Sphere(1), Clan(2) ");
-        int StrTech = Integer.parseInt(System.console().readLine());
+        newStruct.setTech(Integer.parseInt(System.console().readLine()));
 
         // Check chosen type and generate appropriate class selection
-        String ClassOut = switch (StrType) {
-            case 1 -> "light(1), medium(2), heavy(3), hardened(4)";
-            case 2 -> "light(1), medium(2), heavy(3)";
-            case 3 -> "medium(2), heavy(3), hardened(4)";
+        String ClassOut = switch (newStruct.getType()) {
+            case "hanger" -> "light(1), medium(2), heavy(3), hardened(4)";
+            case "building" -> "light(1), medium(2), heavy(3)";
+            case "fortress" -> "medium(2), heavy(3), hardened(4)";
             default -> "You broke something";
         };
 
@@ -32,8 +37,8 @@ public class Main {
         // Check chosen class and output appropriate CF amount for type and class
         // Also find maximum hexes and levels for later output
         int cfMin = 0, cfMax = 0, HexMax = 0, LevelMax = 0;
-        switch (StrType) {
-            case 1:
+        switch (newStruct.getType()) {
+            case "hanger":
                 switch (StrClass) {
                     case 1 -> {
                         cfMin = 1;
@@ -61,7 +66,7 @@ public class Main {
                     }
                 }
                 break;
-            case 2:
+            case "building":
                 switch (StrClass) {
                     case 1 -> {
                         cfMin = 1;
@@ -83,7 +88,7 @@ public class Main {
                     }
                 }
                 break;
-            case 3:
+            case "fortress":
                 switch (StrClass) {
                     case 2 -> {
                         cfMin = 16;
@@ -121,7 +126,7 @@ public class Main {
 
         // Do initial per hex capacity calculations
         int HexWeight;
-        if (StrType == 1) {
+        if (Objects.equals(newStruct.getType(), "hanger")) {
             HexWeight = (int) ((Math.ceil((double) StrHeight / 4)) * 300);
         } else {
             HexWeight = StrCF * StrHeight;
@@ -163,7 +168,7 @@ public class Main {
         // various types of engine and motive types
         double Steam = 0, ICE = 0, FuelCell = 0, Fission = 0, Fusion = 0, Ground = 0, Air = 0, Surface = 0, Submersible = 0;
 
-        if (StrTech == 1) {
+        if (Objects.equals(newStruct.getTech(), "Inner Sphere")) {
             Ground = 4;
             Air = 5;
             Surface = 2;
@@ -191,7 +196,7 @@ public class Main {
                     Fusion = 2.2;
                     break;
             }
-        } else if (StrTech == 2) {
+        } else if (Objects.equals(newStruct.getTech(), "Clan")) {
             Ground = 3.5;
             Air = 4;
             Surface = 1.8;
@@ -223,7 +228,6 @@ public class Main {
 
         double[] PowerMults = {0, Steam, ICE, FuelCell, Fission, Fusion};
         double[] MotiveMults = {0, Ground, Air, Surface, Submersible};
-        double[] StrMults = {0, 0.3, 0.5, 1};
         double[] FuelMults = {0, 0.04, 0.02, 0.02};
 
         // Formula for system weights:
@@ -232,7 +236,7 @@ public class Main {
         // Fuel: range in 100km * fuel multiplier * power system weight
 
         double PowerWeight = (StrHex * StrHeight) * StrMove * PowerMults[StrEngine];
-        double MotiveWeight = (StrHex * StrHeight) * MotiveMults[StrMotive] * StrMults[StrType];
+        double MotiveWeight = (StrHex * StrHeight) * MotiveMults[StrMotive] * newStruct.getStrWeightMult();
         double FuelWeight = 0;
 
         if (StrEngine == 1 || StrEngine == 2 || StrEngine == 3) {
@@ -254,18 +258,18 @@ public class Main {
 
         // Determine crew per hex requirements based on structure class and motive type
         int HexCrew = 0;
-        HexCrew = switch (StrType) {
-            case 1 -> switch (StrMotive) {
+        HexCrew = switch (newStruct.getType()) {
+            case "hanger" -> switch (StrMotive) {
                 case 1, 3 -> 2;
                 case 2, 4 -> 3;
                 default -> HexCrew;
             };
-            case 2 -> switch (StrMotive) {
+            case "building" -> switch (StrMotive) {
                 case 1, 3 -> 3;
                 case 2, 4 -> 4;
                 default -> HexCrew;
             };
-            case 3 -> switch (StrMotive) {
+            case "fortress" -> switch (StrMotive) {
                 case 1 -> 4;
                 case 3 -> 5;
                 case 4 -> 6;
