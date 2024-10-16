@@ -16,129 +16,35 @@ public class Main {
 
         // Get structure type
         System.out.print("Please select the type of structure: hanger (1), building (2), fortress (3) ");
-        newStruct.setType(Integer.parseInt(System.console().readLine()));
+        newStruct.SetType(Integer.parseInt(System.console().readLine()));
 
         // Get tech base for later calculations in stage 2
         System.out.print("Please select the technology base: Inner Sphere(1), Clan(2) ");
-        newStruct.setTech(Integer.parseInt(System.console().readLine()));
+        newStruct.SetTech(Integer.parseInt(System.console().readLine()));
 
         // Check chosen type and generate appropriate class selection
-        String ClassOut = switch (newStruct.getType()) {
-            case "hanger" -> "light(1), medium(2), heavy(3), hardened(4)";
-            case "building" -> "light(1), medium(2), heavy(3)";
-            case "fortress" -> "medium(2), heavy(3), hardened(4)";
-            default -> "You broke something";
-        };
+        String ClassOut = "";
+        switch (newStruct.GetType()) {
+            case "hanger" -> ClassOut = "light(1), medium(2), heavy(3), hardened(4)";
+            case "building" -> ClassOut = "light(1), medium(2), heavy(3)";
+            case "fortress" -> ClassOut = "medium(2), heavy(3), hardened(4)";
+        }
 
         // Get structure class
         System.out.print("\nSelect class: " + ClassOut + " ");
-        int StrClass = Integer.parseInt(System.console().readLine());
-
-        // Check chosen class and output appropriate CF amount for type and class
-        // Also find maximum hexes and levels for later output
-        int cfMin = 0, cfMax = 0, HexMax = 0, LevelMax = 0;
-        switch (newStruct.getType()) {
-            case "hanger":
-                switch (StrClass) {
-                    case 1 -> {
-                        cfMin = 1;
-                        cfMax = 8;
-                        HexMax = 10;
-                        LevelMax = 7;
-                    }
-                    case 2 -> {
-                        cfMin = 9;
-                        cfMax = 20;
-                        HexMax = 14;
-                        LevelMax = 10;
-                    }
-                    case 3 -> {
-                        cfMin = 21;
-                        cfMax = 45;
-                        HexMax = 18;
-                        LevelMax = 13;
-                    }
-                    case 4 -> {
-                        cfMin = 46;
-                        cfMax = 75;
-                        HexMax = 20;
-                        LevelMax = 14;
-                    }
-                }
-                break;
-            case "building":
-                switch (StrClass) {
-                    case 1 -> {
-                        cfMin = 1;
-                        cfMax = 15;
-                        HexMax = 6;
-                        LevelMax = 5;
-                    }
-                    case 2 -> {
-                        cfMin = 16;
-                        cfMax = 40;
-                        HexMax = 8;
-                        LevelMax = 8;
-                    }
-                    case 3 -> {
-                        cfMin = 41;
-                        cfMax = 90;
-                        HexMax = 10;
-                        LevelMax = 10;
-                    }
-                }
-                break;
-            case "fortress":
-                switch (StrClass) {
-                    case 2 -> {
-                        cfMin = 16;
-                        cfMax = 40;
-                        HexMax = 12;
-                        LevelMax = 15;
-                    }
-                    case 3 -> {
-                        cfMin = 41;
-                        cfMax = 90;
-                        HexMax = 15;
-                        LevelMax = 20;
-                    }
-                    case 4 -> {
-                        cfMin = 91;
-                        cfMax = 150;
-                        HexMax = 20;
-                        LevelMax = 30;
-                    }
-                }
-                break;
-        }
+        newStruct.SetStrClass(Integer.parseInt(System.console().readLine()));
 
         // Get number of hexes
-        System.out.print("\nSelect number of hexes: (2-" + HexMax + ") ");
-        int StrHex = Integer.parseInt(System.console().readLine());
+        System.out.print("\nSelect number of hexes: (2-" + newStruct.GetHexMax() + ") ");
+        newStruct.SetNumHexes(Integer.parseInt(System.console().readLine()));
 
         // Get max height
-        System.out.print("\nSelect max height: (1-" + LevelMax + ") ");
-        int StrHeight = Integer.parseInt(System.console().readLine());
+        System.out.print("\nSelect max height: (1-" + newStruct.GetLevelMax() + ") ");
+        newStruct.SetHeight(Integer.parseInt(System.console().readLine()));
 
         // Get construction factor
-        System.out.print("\nSelect construction factor: (" + cfMin + "-" + cfMax + ") ");
-        int StrCF = Integer.parseInt(System.console().readLine());
-
-        // Do initial per hex capacity calculations
-        int HexWeight;
-        if (Objects.equals(newStruct.getType(), "hanger")) {
-            HexWeight = (int) ((Math.ceil((double) StrHeight / 4)) * 300);
-        } else {
-            HexWeight = StrCF * StrHeight;
-        }
-        int StrWeight = StrHex * HexWeight;
-
-        // Output available tonnage
-        System.out.println("The maximum weight per hex is " +
-                String.format("%,d", HexWeight) + " tons.");
-        System.out.println("The maximum weight of the entire structure is " +
-                String.format("%,d", StrWeight) + " tons.");
-
+        System.out.print("\nSelect construction factor: (" + newStruct.GetCfMin() + "-" + newStruct.GetCfMax() + ") ");
+        newStruct.SetCf(Integer.parseInt(System.console().readLine()));
 
         // Stage 2
         // Needed inputs: engine type, desired MP, operating range (if applicable)
@@ -146,143 +52,18 @@ public class Main {
 
         // Get motive type
         System.out.print("Please enter the motive type: Ground(1), Air(2), Water-surface(3), Water-submersible(4) ");
-        int StrMotive = Integer.parseInt(System.console().readLine());
-
-        double MoveMax = switch (StrMotive) {
-            case 1 -> 2;
-            case 2, 4 -> 4;
-            case 3 -> 3;
-            default -> 0;
-        };
+        newStruct.SetMotive(Integer.parseInt(System.console().readLine()));
 
         // Get engine type
         System.out.print("Please enter the engine type: Steam(1), Internal Combustion(2), Fuel Cell(3), Fission(4), Fusion(5) ");
-        int StrEngine = Integer.parseInt(System.console().readLine());
+       newStruct.SetEngine(Integer.parseInt(System.console().readLine()));
 
         // Get movement speed
         System.out.print("Please enter desired maximum movement in increments of 0.25. Maximum value: "
-                + MoveMax + " ");
-        double StrMove = Double.parseDouble(System.console().readLine());
+                + newStruct.GetMoveMax() + " ");
+        newStruct.SetMoveSpeed(Double.parseDouble(System.console().readLine()));
 
-        // Variables and switch statements for determining the multiplier numbers for the
-        // various types of engine and motive types
-        double Steam = 0, ICE = 0, FuelCell = 0, Fission = 0, Fusion = 0, Ground = 0, Air = 0, Surface = 0, Submersible = 0;
-
-        if (Objects.equals(newStruct.getTech(), "Inner Sphere")) {
-            Ground = 4;
-            Air = 5;
-            Surface = 2;
-            Submersible = 3.5;
-            switch (StrMotive) {
-                case 1, 3:
-                    Steam = 6;
-                    ICE = 3;
-                    FuelCell = 4;
-                    Fission = 3;
-                    Fusion = 2;
-                    break;
-                case 2:
-                    Steam = 6;
-                    ICE = 3;
-                    FuelCell = 4.4;
-                    Fission = 3;
-                    Fusion = 2;
-                    break;
-                case 4:
-                    Steam = 7;
-                    ICE = 3.2;
-                    FuelCell = 5;
-                    Fission = 3;
-                    Fusion = 2.2;
-                    break;
-            }
-        } else if (Objects.equals(newStruct.getTech(), "Clan")) {
-            Ground = 3.5;
-            Air = 4;
-            Surface = 1.8;
-            Submersible = 3.5;
-            switch (StrMotive) {
-                case 1, 3:
-                    Steam = 7;
-                    ICE = 3;
-                    FuelCell = 4;
-                    Fission = 4;
-                    Fusion = 1.8;
-                    break;
-                case 2:
-                    Steam = 7;
-                    ICE = 3;
-                    FuelCell = 4.2;
-                    Fission = 4;
-                    Fusion = 1.8;
-                    break;
-                case 4:
-                    Steam = 8;
-                    ICE = 3;
-                    FuelCell = 4.4;
-                    Fission = 4;
-                    Fusion = 2;
-                    break;
-            }
-        }
-
-        double[] PowerMults = {0, Steam, ICE, FuelCell, Fission, Fusion};
-        double[] MotiveMults = {0, Ground, Air, Surface, Submersible};
-        double[] FuelMults = {0, 0.04, 0.02, 0.02};
-
-        // Formula for system weights:
-        // Power system: (hexes * levels) * MP * power system multiplier
-        // Motive system: (hexes * levels) * motive type multiplier * structure type multiplier (hangers 0.3, buildings 0.5, fortress 1.0)
-        // Fuel: range in 100km * fuel multiplier * power system weight
-
-        double PowerWeight = (StrHex * StrHeight) * StrMove * PowerMults[StrEngine];
-        double MotiveWeight = (StrHex * StrHeight) * MotiveMults[StrMotive] * newStruct.getStrWeightMult();
-        double FuelWeight = 0;
-
-        if (StrEngine == 1 || StrEngine == 2 || StrEngine == 3) {
-            System.out.print("Please enter desired maximum range: (in hundreds of kilometers) ");
-            int StrRange = Integer.parseInt(System.console().readLine());
-            FuelWeight = StrRange * FuelMults[StrEngine] * PowerWeight;
-        }
-
-        System.out.println("Total weight of power system is " +
-                String.format("%1$,.2f",PowerWeight) + " tons.");
-
-        System.out.println("Total weight of motive system is " +
-                String.format("%1$,.2f",MotiveWeight) + " tons.");
-
-        if (FuelWeight != 0) {
-            System.out.println("Total weight of fuel is " +
-                    String.format("%1$,.2f", FuelWeight) + " tons.");
-        }
-
-        // Determine crew per hex requirements based on structure class and motive type
-        int HexCrew = 0;
-        HexCrew = switch (newStruct.getType()) {
-            case "hanger" -> switch (StrMotive) {
-                case 1, 3 -> 2;
-                case 2, 4 -> 3;
-                default -> HexCrew;
-            };
-            case "building" -> switch (StrMotive) {
-                case 1, 3 -> 3;
-                case 2, 4 -> 4;
-                default -> HexCrew;
-            };
-            case "fortress" -> switch (StrMotive) {
-                case 1 -> 4;
-                case 3 -> 5;
-                case 4 -> 6;
-                default -> HexCrew;
-            };
-            default -> 0;
-        };
-        int BaseCrew = HexCrew * StrHex;
-        int Officers = (int) Math.ceil((double) BaseCrew / 10);
-        int TotalCrew = BaseCrew + Officers;
-
-        System.out.print("Crew requirements:\n" +
-                TotalCrew + " total crew.\n" +
-                BaseCrew + " base crew members with " + Officers +" officers.");
+        // Call method to calculate weights and output values
+        newStruct.CalculateWeights();
     }
 }
