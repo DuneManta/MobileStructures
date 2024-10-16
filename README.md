@@ -23,14 +23,13 @@ The initial plan is to get a single tile working first. That way, the editor wil
 
 The task ahead will certainly be difficult. The chosen language of Java has been chosen as it is the same language in use by MegaMek, and I hope to be able to offer my app to their development team in the future if they are interested in integration with their project.
 
-**Development stage 1 - (in progress)**\
-	Design early draft of UI of core structure page - (complete) [UI draft available here](https://drive.google.com/file/d/1-miPgra_FQU7BXWDseNzAxUhhfAG6j2m/view?usp=sharing)\
-	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields. - (complete)\
- 	Refactor code to use a class model - (in progress)
+**Development stage 1 - (Complete)**\
+	Design early draft of UI of core structure page. - [UI draft available here](https://drive.google.com/file/d/1-miPgra_FQU7BXWDseNzAxUhhfAG6j2m/view?usp=sharing)\
+	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields.)\
+ 	Refactor code to use a class model.
 
 **Stage 2 - (ns)**\
 	Develop a UI that incorporates the fields and outputs the information\
-	Create framework for additional features later in development\
 	Create hex-grid display in non-functional/interactive form
 
 **Stage 3 - (ns)**\
@@ -38,21 +37,24 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 	Create early draft of equipment page UI
 
 **Stage 4 - (ns)**\
-	Begin large scale creation and/or importation of information for various equipment items\
-	Create test equipment items to make testing and troubleshooting easier
+	Create ability to save and load structures\
 
 **Stage 5 - (ns)**\
-	Create method of selecting and storing information about individual hexes in the equipment menu\
-	Display weight values of core components divided across each hex
+	Create method of attaching equipment to the structure\
+	Create test equipment items to make testing and troubleshooting easier
 
 **Stage 6 - (ns)**\
-	Create ability to save and load structures\
+	Create method of selecting and storing information about individual hexes
 	Finish work on equipment and other needed modules\
 	Prepare for initial build release
 
+ **Stage 7 - (ns)**\
+ 	Prepare for initial build release
+	Continue adding additional equipment items
+
  ***
 
-The application has reached a functional state! However there is currently no data verification, so inserting bad data will result in a crash. This, along with refactoring the code to use objects and classes, is something that will be worked on. For now, the only way to run the app is to load it into an IDE for Java and use the IDE console. I have been using IntelliJ Idea Community Edition for development, and as such is my recommendation for running the application.
+The application has reached a functional state! Basic data verification has been added. It's nothing special, but it serves the purpose while I work on building and migrating to a UI. For now, the only way to run the app is to load it into an IDE for Java and use the IDE console. I have been using IntelliJ Idea Community Edition for development, and as such is my recommendation for running the application.
 
 In order to run the application, you may need to ensure you version of Java is on par with what I have been using for development. This version is Java 17 - 17.0.11.9 provided by Adoptium. A guide for installing this version of Java can be found below this paragraph, created by the open source developers at the MegaMek project. This is the guide I followed to install my version of Java.
 
