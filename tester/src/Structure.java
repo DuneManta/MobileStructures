@@ -210,11 +210,20 @@ public class Structure {
         totalCrew = crew + officers;
 
         // Calculate remaining tonnage space after distributing motive and power system weights
-        remainingWeight = hexWeight - ((engineWeight / numHexes) + (motiveWeight / numHexes));
+        remainingWeight = hexWeight - RoundUpToHalf(engineWeight, numHexes) - RoundUpToHalf(motiveWeight, numHexes);
 
         // Call method to output values to user
         OutputValues();
     }
+
+    private double RoundUpToHalf(double num1, double num2) {
+        double roundedTotal = num1 / num2;
+        if (roundedTotal % 0.5 != 0) {
+            double offset = 0.5 - (roundedTotal % 0.5);
+            roundedTotal += offset;
+        }
+        return roundedTotal;
+    };
 
     // Output values of structure to user
     private void OutputValues() {
