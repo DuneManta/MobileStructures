@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="StructureEditor">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="builder.StructureEditor">
   <grid id="27dc6" binding="contentPane" layout-manager="GridLayoutManager" row-count="9" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
@@ -85,7 +85,7 @@
           <text value="Size (in hexes)"/>
         </properties>
       </component>
-      <component id="3fc1c" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
+      <component id="3fc1c" class="javax.swing.JSpinner" binding="conFactor">
         <constraints>
           <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -99,7 +99,7 @@
           <text value="Construction Factor"/>
         </properties>
       </component>
-      <component id="2507e" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+      <component id="2507e" class="javax.swing.JComboBox" binding="powerSystem">
         <constraints>
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -113,7 +113,7 @@
           </model>
         </properties>
       </component>
-      <component id="318d3" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+      <component id="318d3" class="javax.swing.JComboBox" binding="motive">
         <constraints>
           <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -126,15 +126,15 @@
           </model>
         </properties>
       </component>
-      <component id="e69dd" class="javax.swing.JSpinner" binding="spinner2" default-binding="true">
+      <component id="e69dd" class="javax.swing.JSpinner" binding="fuel">
         <constraints>
           <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <enabled value="false"/>
+          <enabled value="true"/>
         </properties>
       </component>
-      <component id="da5f3" class="javax.swing.JSpinner" binding="spinner3" default-binding="true">
+      <component id="da5f3" class="javax.swing.JSpinner" binding="height">
         <constraints>
           <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -169,10 +169,10 @@
           <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Range"/>
+          <text value="Range (Kilometers)"/>
         </properties>
       </component>
-      <component id="537fe" class="javax.swing.JSpinner" binding="spinner4" default-binding="true">
+      <component id="537fe" class="javax.swing.JSpinner" binding="movement">
         <constraints>
           <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

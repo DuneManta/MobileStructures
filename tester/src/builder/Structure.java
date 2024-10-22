@@ -1,9 +1,11 @@
+package builder;
+
 import java.util.Objects;
 
 public class Structure {
 
     // Arrays for storing the different values
-    private final String[] typeArray = {"hanger", "building", "fortress"};
+    private final String[] typeArray = {"Hanger", "building", "fortress"};
     private final String[] techArray = {"Inner Sphere", "Clan"};
     private final String[] classArray = {"light", "medium", "heavy", "hardened"};
     private final String[] motiveArray = {"ground", "air", "surface", "submersible"};
@@ -87,7 +89,7 @@ public class Structure {
     // Determine the values for the construction factor, level, and hex maximums
     public void SetCfAndHex() {
         switch (type) {
-            case "hanger":
+            case "Hanger":
                 switch (strClass) {
                     case "light" -> {
                         cfMin = 1;
@@ -184,7 +186,7 @@ public class Structure {
     // Fuel: range in 100km * fuel multiplier * power system weight
     public void CalculateWeights() {
         // Calculate weight capacity
-        if (Objects.equals(type, "hanger")) {
+        if (Objects.equals(type, "Hanger")) {
             hexWeight = (int) ((Math.ceil((double) height / 4)) * 300);
         } else {
             hexWeight = conFactor * height;
@@ -302,22 +304,22 @@ public class Structure {
         moveSpeed = temp;
     }
 
-    public void SetEngine(int engine) {
-        int temp = engine - 1;
-        if (temp < 0 || temp > 4) {
-            System.out.println("Invalid input, using default: fusion(5)");
-            temp = 4;
-        }
-        this.engine = engineArray[temp];
-        if (temp == 0) {
-            fuelMult = fuelMults[0];
-        } else if (temp == 1 || temp == 2) {
-            fuelMult = fuelMults[1];
-        } else {
-            fuelMult = fuelMults[2];
-        }
-        double[] enginePowerMults = techBasePowerMults[temp];
-        finalPowerMult = enginePowerMults[motiveIndex];
+    public void SetEngine(Object engine) {
+//        int temp = engine - 1;
+//        if (temp < 0 || temp > 4) {
+//            System.out.println("Invalid input, using default: fusion(5)");
+//            temp = 4;
+//        }
+//        this.engine = engineArray[temp];
+//        if (temp == 0) {
+//            fuelMult = fuelMults[0];
+//        } else if (temp == 1 || temp == 2) {
+//            fuelMult = fuelMults[1];
+//        } else {
+//            fuelMult = fuelMults[2];
+//        }
+//        double[] enginePowerMults = techBasePowerMults[temp];
+//        finalPowerMult = enginePowerMults[motiveIndex];
     }
 
     public void SetNumHexes(int hexes) {

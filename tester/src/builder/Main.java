@@ -1,6 +1,6 @@
-import javax.swing.*;
-import java.util.Objects;
+package builder;
 
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
