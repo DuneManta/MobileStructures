@@ -5,11 +5,17 @@ import java.util.Objects;
 public class Structure {
 
     // Arrays for storing the different values
-    private final String[] typeArray = {"Hanger", "building", "fortress"};
+    private final String[] typeArray = {"Hanger", "Building", "Fortress"};
     private final String[] techArray = {"Inner Sphere", "Clan"};
-    private final String[] classArray = {"light", "medium", "heavy", "hardened"};
-    private final String[] motiveArray = {"ground", "air", "surface", "submersible"};
-    private final String[] engineArray = {"steam", "ICE", "fuelCell", "fission", "fusion"};
+    private final String[] engineArray = {"Steam", "Internal Combustion (ICE)", "Fuel Cell", "Fission", "Fusion"};
+    private final String[][] motiveArray = {
+            {"Ground", "Air", "Water - Surface", "Water - Submersible"},
+            {"Ground", "Water - Surface", "Water - Submersible"}
+    };
+    private final String[][] classArray = {
+            {"Light", "Medium", "Heavy", "Hardened"},
+            {"Medium", "Heavy", "Hardened"}
+    };
 
     private final double[] strTypeMults = {0.3, 0.5, 1};
     private final double[][][] powerSystemMults = {
@@ -63,6 +69,8 @@ public class Structure {
     private double fuelWeight;
     private double moveSpeed;
     private double remainingWeight;
+    private double motivePerHex;
+    private double powerPerHex;
 
     // Construction only variables
     private int cfMin;
@@ -70,46 +78,64 @@ public class Structure {
     private int levelMax;
     private int hexMax;
     private int motiveIndex;
+    private int powerIndex;
     private int[] crewType;
     private int finalCrewMult;
     private double moveMax;
     private double strWeightMult;
     private double[][] techBasePowerMults;
+    private double[] enginePowerMults;
     private double[] motiveTechMults;
     private double fuelMult;
     private double finalPowerMult;
     private double finalMotiveMult;
+    private String[] availableClasses;
+    private String[] availableMotives;
 
 
-    // Empty constructor to establish a structure
-    public Structure() {}
+    // Default constructor to establish a structure with basic settings
+    public Structure() {
+        SetType(typeArray[0]);
+        SetTech(techArray[0]);
+        SetStrClass(classArray[0][0]);
+        SetNumHexes(2);
+        SetHeight(1);
+        SetCf(cfMin);
+        SetEngine(engineArray[0]);
+        SetMotive(motiveArray[0][0]);
+        SetMoveSpeed(0.0);
+        CalculateWeights();
+    }
 
 
     // Functions for determining attributes not set directly by user.
     // Determine the values for the construction factor, level, and hex maximums
-    public void SetCfAndHex() {
+    private void SetCfAndHex() {
+        if (strClass == null || type == null) {
+            return;
+        }
         switch (type) {
             case "Hanger":
                 switch (strClass) {
-                    case "light" -> {
+                    case "Light" -> {
                         cfMin = 1;
                         cfMax = 8;
                         hexMax = 10;
                         levelMax = 7;
                     }
-                    case "medium" -> {
+                    case "Medium" -> {
                         cfMin = 9;
                         cfMax = 20;
                         hexMax = 14;
                         levelMax = 10;
                     }
-                    case "heavy" -> {
+                    case "Heavy" -> {
                         cfMin = 21;
                         cfMax = 45;
                         hexMax = 18;
                         levelMax = 13;
                     }
-                    case "hardened" -> {
+                    case "Hardened" -> {
                         cfMin = 46;
                         cfMax = 75;
                         hexMax = 20;
@@ -117,21 +143,21 @@ public class Structure {
                     }
                 }
                 break;
-            case "building":
+            case "Building":
                 switch (strClass) {
-                    case "light" -> {
+                    case "Light" -> {
                         cfMin = 1;
                         cfMax = 15;
                         hexMax = 6;
                         levelMax = 5;
                     }
-                    case "medium" -> {
+                    case "Medium" -> {
                         cfMin = 16;
                         cfMax = 40;
                         hexMax = 8;
                         levelMax = 8;
                     }
-                    case "heavy" -> {
+                    case "Heavy" -> {
                         cfMin = 41;
                         cfMax = 90;
                         hexMax = 10;
@@ -139,21 +165,21 @@ public class Structure {
                     }
                 }
                 break;
-            case "fortress":
+            case "Fortress":
                 switch (strClass) {
-                    case "medium" -> {
+                    case "Medium" -> {
                         cfMin = 16;
                         cfMax = 40;
                         hexMax = 12;
                         levelMax = 15;
                     }
-                    case "heavy" -> {
+                    case "Heavy" -> {
                         cfMin = 41;
                         cfMax = 90;
                         hexMax = 15;
                         levelMax = 20;
                     }
-                    case "hardened" -> {
+                    case "Hardened" -> {
                         cfMin = 91;
                         cfMax = 150;
                         hexMax = 20;
@@ -167,13 +193,13 @@ public class Structure {
     // Determine max move speed from chosen motive
     private void setMoveMax() {
         switch (motive) {
-            case "ground":
+            case "Ground":
                 moveMax = 2;
                 break;
-            case "air", "submersible":
+            case "Air", "Water - Submersible":
                 moveMax = 4;
                 break;
-            case "surface":
+            case "Water - Surface":
                 moveMax = 3;
                 break;
         }
@@ -195,27 +221,24 @@ public class Structure {
 
         // Calculate engine weight
         engineWeight = (numHexes * height) * moveSpeed * finalPowerMult;
+        engineWeight = RoundUpToHalf(engineWeight, 1);
+        powerPerHex = RoundUpToHalf(engineWeight, numHexes);
 
         // Calculate motive weight
         motiveWeight = (numHexes * height) * finalMotiveMult * strWeightMult;
-
-        // Get input for range and calculate fuel weight if needed
-        if (fuelMult != 0) {
-            System.out.print("Please enter desired maximum range: (in hundreds of kilometers) ");
-            range = Integer.parseInt(System.console().readLine());
-            fuelWeight = range * fuelMult * engineWeight;
-        }
+        motiveWeight = RoundUpToHalf(motiveWeight, 1);
+        motivePerHex = RoundUpToHalf(motiveWeight, numHexes);
 
         // Calculate minimum crew
         crew = finalCrewMult * numHexes;
         officers = (int) Math.ceil((double) crew / 10);
         totalCrew = crew + officers;
 
+        // Calculate fuel weight
+        fuelWeight = range * fuelMult * engineWeight;
+
         // Calculate remaining tonnage space after distributing motive and power system weights
         remainingWeight = hexWeight - RoundUpToHalf(engineWeight, numHexes) - RoundUpToHalf(motiveWeight, numHexes);
-
-        // Call method to output values to user
-        OutputValues();
     }
 
     private double RoundUpToHalf(double num1, double num2) {
@@ -227,132 +250,109 @@ public class Structure {
         return roundedTotal;
     };
 
-    // Output values of structure to user
-    private void OutputValues() {
-        System.out.println("The maximum weight per hex is " +
-                String.format("%,d", hexWeight) + " tons.");
-        System.out.println("The maximum weight of the entire structure is " +
-                String.format("%,d", totalWeight) + " tons.");
-        System.out.println("Total weight of power system is " +
-                String.format("%1$,.2f", engineWeight) + " tons.");
-        System.out.println("Total weight of motive system is " +
-                String.format("%1$,.2f", motiveWeight) + " tons.");
-        System.out.println("Remaining weight after distributing power and motive systems is " +
-                String.format("%1$,.2f", remainingWeight) + " tons.");
-        if (fuelWeight != 0) {
-            System.out.println("Total weight of fuel is " +
-                    String.format("%1$,.2f", fuelWeight) + " tons.");
+    private void SetTechMults() {
+        if (motive == null || engine == null) {
+            return;
         }
-        System.out.print("Crew requirements:\n" +
-                totalCrew + " total crew.\n" +
-                crew + " base crew members with " + officers +" officers.");
+        enginePowerMults = techBasePowerMults[powerIndex];
+        finalPowerMult = enginePowerMults[motiveIndex];
+        finalMotiveMult = motiveTechMults[motiveIndex];
     }
 
 
-    // Setters, handle invalid inputs and set to defaults
-    public void SetType(int type) {
-        int temp = type - 1;
-        if (temp > 2 || temp < 0) {
-            System.out.println("Invalid input, using default: Building(2)");
-            temp = 1;
+    // Setters
+    public void SetType(String type) {
+        for (int i = 0; i < typeArray.length; i++) {
+            if (Objects.equals(typeArray[i], type)) {
+                this.type = typeArray[i];
+                strWeightMult = strTypeMults[i];
+                crewType = crewMults[i];
+                if (i == 2) {
+                    availableClasses = classArray[1];
+                    availableMotives = motiveArray[1];
+                } else {
+                    availableClasses = classArray[0];
+                    availableMotives = motiveArray[0];
+                }
+                SetCfAndHex();
+            }
         }
-        this.type = typeArray[temp];
-        this.strWeightMult = strTypeMults[temp];
-        crewType = crewMults[temp];
     }
 
-    public void SetTech(int tech) {
-        int temp = tech - 1;
-        if (temp < 0 || temp > 1) {
-            System.out.println("Invalid input, using default: Inner Sphere(1)");
-            temp = 0;
+    public void SetTech(String tech) {
+        for (int i = 0; i < techArray.length; i++) {
+            if (Objects.equals(techArray[i], tech)) {
+                this.tech = techArray[i];
+                techBasePowerMults = powerSystemMults[i];
+                motiveTechMults = motiveMults[i];
+                SetTechMults();
+            }
         }
-        this.tech = techArray[temp];
-        techBasePowerMults = powerSystemMults[temp];
-        motiveTechMults = motiveMults[temp];
     }
 
-    public void SetStrClass(int iClass) {
-        int temp = iClass - 1;
-        if (temp < 0 || temp > 3) {
-            System.out.println("Invalid input, using default: medium(2)");
-            temp = 1;
+    public void SetStrClass(String iClass) {
+        for (int i = 0; i < availableClasses.length; i++) {
+            if (Objects.equals(availableClasses[i], iClass)) {
+                strClass = availableClasses[i];
+                SetCfAndHex();
+            }
         }
-        strClass = classArray[temp];
-        SetCfAndHex();
     }
 
-    public void SetMotive(int motive) {
-        int temp = motive - 1;
-        if (temp < 0 || temp > 3) {
-            System.out.println("Invalid input, using default: ground(1)");
-            temp = 0;
+    public void SetMotive(String motive) {
+        for (int i = 0; i < availableMotives.length; i++) {
+            if (Objects.equals(availableMotives[i], motive)) {
+                this.motive = availableMotives[i];
+                setMoveMax();
+                finalMotiveMult = motiveTechMults[i];
+                motiveIndex = i;
+                finalCrewMult = crewType[i];
+            }
         }
-        this.motive = motiveArray[temp];
-        setMoveMax();
-        finalMotiveMult = motiveTechMults[temp];
-        motiveIndex = temp;
-        finalCrewMult = crewType[temp];
+    }
+
+    public void SetEngine(String engine) {
+        for (int i = 0; i < engineArray.length; i++) {
+            if (Objects.equals(engineArray[i], engine)) {
+                this.engine = engine;
+                if (i == 0) {
+                    fuelMult = fuelMults[0];
+                } else if (i == 1 || i == 2) {
+                    fuelMult = fuelMults[1];
+                } else {
+                    fuelMult = fuelMults[2];
+                }
+                enginePowerMults = techBasePowerMults[i];
+                powerIndex = i;
+                finalPowerMult = enginePowerMults[motiveIndex];
+            }
+        }
     }
 
     public void SetMoveSpeed(double speed) {
-        double temp = speed;
-        if (temp < 0 || temp > moveMax || temp % 0.25 != 0) {
-            System.out.println("Invalid input, using default: 1");
-            temp = 1;
-        }
-        moveSpeed = temp;
-    }
-
-    public void SetEngine(Object engine) {
-//        int temp = engine - 1;
-//        if (temp < 0 || temp > 4) {
-//            System.out.println("Invalid input, using default: fusion(5)");
-//            temp = 4;
-//        }
-//        this.engine = engineArray[temp];
-//        if (temp == 0) {
-//            fuelMult = fuelMults[0];
-//        } else if (temp == 1 || temp == 2) {
-//            fuelMult = fuelMults[1];
-//        } else {
-//            fuelMult = fuelMults[2];
-//        }
-//        double[] enginePowerMults = techBasePowerMults[temp];
-//        finalPowerMult = enginePowerMults[motiveIndex];
+        moveSpeed = speed;
     }
 
     public void SetNumHexes(int hexes) {
-        int temp = hexes;
-        if (temp < 2 || temp > hexMax) {
-            System.out.println("Invalid input, using default: 2");
-            temp = 2;
-        }
-        numHexes = temp;
+        numHexes = hexes;
     }
 
     public void SetHeight(int height) {
-        int temp = height;
-        if (temp < 1 || temp > levelMax) {
-            System.out.println("Invalid input, using default: 1");
-            temp = 1;
-        }
-        this.height = temp;
+        this.height = height;
     }
 
     public void SetCf(int cf) {
-        int temp = cf;
-        if (temp < cfMin || temp > cfMax) {
-            System.out.println("Invalid input, using default: " + cfMin);
-            temp = cfMin;
-        }
-        conFactor = temp;
+        conFactor = cf;
+    }
+
+    public void SetRange(int range) {
+        this.range = range / 100;
     }
 
 
     // Getters
-    public String GetType(){
-        return type;
+    public String GetClass() {
+        return strClass;
     }
 
     public int GetCfMin() {
@@ -393,5 +393,57 @@ public class Structure {
 
     public int GetTotalWeight() {
         return totalWeight;
+    }
+
+    public String[] GetAvailableClasses() {
+        return availableClasses;
+    }
+
+    public int GetRange() {
+        return range * 100;
+    }
+
+    public double GetSpeed() {
+        return moveSpeed;
+    }
+
+    public double GetPowerWeight() {
+        return engineWeight;
+    }
+
+    public double GetMotiveWeight() {
+        return motiveWeight;
+    }
+
+    public double GetRemainingWeight() {
+        return remainingWeight;
+    }
+
+    public int GetOfficers() {
+        return officers;
+    }
+
+    public int GetCrew() {
+        return crew;
+    }
+
+    public double GetFuelWeight() {
+        return fuelWeight;
+    }
+
+    public String[] GetAvailableMotives() {
+        return availableMotives;
+    }
+
+    public String GetMotive() {
+        return motive;
+    }
+
+    public double GetPowerPerHex() {
+        return powerPerHex;
+    }
+
+    public double GetMotivePerHex() {
+        return motivePerHex;
     }
 }
