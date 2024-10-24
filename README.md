@@ -29,15 +29,15 @@ The task ahead will certainly be difficult. The chosen language of Java has been
  	Refactor code to use a class model.
 
 **Stage 2 - (in progress)**\
-	Develop a UI that incorporates the fields and outputs the information (in progress)\
-	Create hex-grid display in non-functional/interactive form(not started)
+	Develop a UI that incorporates the fields and outputs the information (complete)\
+	Create hex-grid display in non-functional/interactive form(in progress)
 
 **Stage 3 - (ns)**\
 	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted\
 	Create early draft of equipment page UI
 
 **Stage 4 - (ns)**\
-	Create ability to save and load structures\
+	Create ability to save and load structures
 
 **Stage 5 - (ns)**\
 	Create method of attaching equipment to the structure\
