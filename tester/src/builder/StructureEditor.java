@@ -1,10 +1,6 @@
 package builder;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class StructureEditor extends JFrame {
     private JPanel contentPane;
@@ -45,109 +41,76 @@ public class StructureEditor extends JFrame {
 
         // Listeners
         // Listener for structure type
-        structureType.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                userStructure.SetType((String) structureType.getSelectedItem());
-                if (structureType.getSelectedItem() == "Fortress" && structureClass.getSelectedItem() == "Light") {
-                    userStructure.SetStrClass("Medium");
-                }
-                if (structureType.getSelectedItem() == "Fortress" && motive.getSelectedItem() == "Air") {
-                    userStructure.SetMotive("Ground");
-                }
-                Calculate();
+        structureType.addActionListener(_ -> {
+            userStructure.SetType((String) structureType.getSelectedItem());
+            if (structureType.getSelectedItem() == "Fortress" && structureClass.getSelectedItem() == "Light") {
+                userStructure.SetStrClass("Medium");
             }
+            if (structureType.getSelectedItem() == "Fortress" && motive.getSelectedItem() == "Air") {
+                userStructure.SetMotive("Ground");
+            }
+            Calculate();
         });
 
         // Listener for tech base
-        techBase.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                userStructure.SetTech((String) techBase.getSelectedItem());
-                Calculate();
-            }
+        techBase.addActionListener(_ -> {
+            userStructure.SetTech((String) techBase.getSelectedItem());
+            Calculate();
         });
 
         // Listener for class
-        structureClass.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                userStructure.SetStrClass((String) structureClass.getSelectedItem());
-                Calculate();
-            }
+        structureClass.addActionListener(_ -> {
+            userStructure.SetStrClass((String) structureClass.getSelectedItem());
+            Calculate();
         });
 
         // Listener for hex spinner
-        structureSize.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                userStructure.SetNumHexes((Integer) structureSize.getValue());
-                Calculate();
-            }
+        structureSize.addChangeListener(_ -> {
+            userStructure.SetNumHexes((Integer) structureSize.getValue());
+            Calculate();
         });
 
         // Listener for height spinner
-        height.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                userStructure.SetHeight((Integer) height.getValue());
-                Calculate();
-            }
+        height.addChangeListener(_ -> {
+            userStructure.SetHeight((Integer) height.getValue());
+            Calculate();
         });
 
         // Listener for construction factor
-        conFactor.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                userStructure.SetCf((Integer) conFactor.getValue());
-                Calculate();
-            }
+        conFactor.addChangeListener(_ -> {
+            userStructure.SetCf((Integer) conFactor.getValue());
+            Calculate();
         });
 
         // Listener for power system
-        powerSystem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FuelToggle();
-                userStructure.SetEngine((String) powerSystem.getSelectedItem());
-                Calculate();
-            }
+        powerSystem.addActionListener(_ -> {
+            FuelToggle();
+            userStructure.SetEngine((String) powerSystem.getSelectedItem());
+            Calculate();
         });
 
         // Listener for motive system
-        motive.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                userStructure.SetMotive((String) motive.getSelectedItem());
-                Calculate();
-            }
+        motive.addActionListener(_ -> {
+            userStructure.SetMotive((String) motive.getSelectedItem());
+            Calculate();
         });
 
         // Listener for range
-        fuel.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                userStructure.SetRange((Integer) fuel.getValue());
-                Calculate();
-            }
+        fuel.addChangeListener(_ -> {
+            userStructure.SetRange((Integer) fuel.getValue());
+            Calculate();
         });
 
         // Listener for movement
-        movement.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                userStructure.SetMoveSpeed((Double) movement.getValue());
-                Calculate();
-            }
+        movement.addChangeListener(_ -> {
+            userStructure.SetMoveSpeed((Double) movement.getValue());
+            Calculate();
         });
 
         // Listener for fuel
-        fuel.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                userStructure.SetRange((Integer) fuel.getValue());
-                Calculate();
-            }
+        fuel.addChangeListener(_ -> {
+            userStructure.SetRange((Integer) fuel.getValue());
+            Calculate();
         });
     }
 
