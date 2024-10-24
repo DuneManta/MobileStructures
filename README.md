@@ -54,7 +54,7 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 
  ***
 
-The application has reached a functional state! Basic data verification has been added. It's nothing special, but it serves the purpose while I work on building and migrating to a UI. For now, the only way to run the app is to load it into an IDE for Java and use the IDE console. I have been using IntelliJ Idea Community Edition for development, and as such is my recommendation for running the application.
+An initial GUI build is complete! Functionality appears complete and without major bugs, though some optimization is likely needed. Additional GUI work is still needed in order to impliment more functionality. For now, the only way to run the app is to load it into an IDE for Java and use the IDE console. I have been using IntelliJ Idea Community Edition for development, and as such is my recommendation for running the application.
 
 In order to run the application, you may need to ensure you version of Java is on par with what I have been using for development. This version is Java 17 - 17.0.11.9 provided by Adoptium. A guide for installing this version of Java can be found below this paragraph, created by the open source developers at the MegaMek project. This is the guide I followed to install my version of Java.
 
