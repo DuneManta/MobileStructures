@@ -248,7 +248,7 @@ public class Structure {
             roundedTotal += offset;
         }
         return roundedTotal;
-    };
+    }
 
     private void SetTechMults() {
         if (motive == null || engine == null) {
@@ -291,9 +291,9 @@ public class Structure {
     }
 
     public void SetStrClass(String iClass) {
-        for (int i = 0; i < availableClasses.length; i++) {
-            if (Objects.equals(availableClasses[i], iClass)) {
-                strClass = availableClasses[i];
+        for (String availableClass : availableClasses) {
+            if (Objects.equals(availableClass, iClass)) {
+                strClass = availableClass;
                 SetCfAndHex();
             }
         }
