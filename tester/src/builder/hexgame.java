@@ -33,7 +33,7 @@ public class hexgame
 	final static Color COLOURBACK =  Color.GRAY;
 	final static Color COLOURCELL =  Color.WHITE;
 	final static Color COLOURGRID =  Color.BLACK;	 
-	final static Color COLOURONE = new Color(255,255,255,200);
+	final static Color COLOURONE = Color.WHITE;
 	final static Color COLOURONETXT = Color.BLUE;
 	final static Color COLOURTWO = new Color(119, 138, 255, 255);
 	final static Color COLOURTWOTXT = new Color(255,100,255);
@@ -57,6 +57,9 @@ public class hexgame
 				board[i][j]=EMPTY;
 			}
 		}
+
+		board[9][9] = 1;
+		board[9][10] = 1;
 	}
 
 	private void createAndShowGUI()
@@ -109,22 +112,17 @@ public class hexgame
 					hexmech.fillHex(i,j,board[i][j],g2);
 				}
 			}
-
-			//g.setColor(Color.RED);
-			//g.drawLine(mPt.x,mPt.y, mPt.x,mPt.y);
 		}
 
 		class MyMouseListener extends MouseAdapter	{	//inner class inside DrawingPanel 
 			public void mouseClicked(MouseEvent e) { 
 				int x = e.getX(); 
-				int y = e.getY(); 
-				//mPt.x = x;
-				//mPt.y = y;
-				Point p = new Point( hexmech.pxtoHex(e.getX(),e.getY()) );
+				int y = e.getY();
+				Point p = new Point( hexmech.pxtoHex(x,y) );
 				if (p.x < 0 || p.y < 0 || p.x >= BSIZE || p.y >= BSIZE) return;
 
 				//What do you want to do when a hexagon is clicked?
-				board[p.x][p.y] = ' ';
+				board[p.x][p.y] = 1;
 				repaint();
             }
 		} //end of MyMouseListener class 

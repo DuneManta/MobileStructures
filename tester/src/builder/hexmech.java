@@ -66,8 +66,7 @@ and calculates all six of the points in the hexagon.
 	public static Polygon hex (int x0, int y0) {
 
 		int y = y0 + BORDERS;
-		int x = x0 + BORDERS; // + (XYVertex ? t : 0); //Fix added for XYVertex = true. 
-				      // NO! Done below in cx= section
+		int x = x0 + BORDERS; // + (XYVertex ? t : 0); //Fix added for XYVertex = true.
 		if (s == 0  || h == 0) {
 			System.out.println("ERROR: size of hex has not been set");
 			return new Polygon();
@@ -75,7 +74,6 @@ and calculates all six of the points in the hexagon.
 
 		int[] cx,cy;
 
-//I think that this XYvertex stuff is taken care of in the int x line above. Why is it here twice?
 		if (XYVertex) 
 			cx = new int[] {x,x+s,x+s+t,x+s,x,x-t};  //this is for the top left vertex being at x,y. Which means that some of the hex is cutoff.
 		else
@@ -118,23 +116,23 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 	  The value of n is converted to letter and drawn in the hexagon.
 *****************************************************************************/
 	public static void fillHex(int i, int j, int n, Graphics2D g2) {
-		char c='o';
+//		char c='o';
 		int x = i * (s+t);
 		int y = j * h + (i%2) * h/2;
 		if (n < 0) {
-			g2.setColor(hexgame.COLOURONE);
+			g2.setColor(hexgame.COLOURCELL);
 			g2.fillPolygon(hex(x,y));
-			g2.setColor(hexgame.COLOURONETXT);
-			c = (char)(-n);
-			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME: handle XYVertex
+//			g2.setColor(hexgame.COLOURONETXT);
+//			c = (char)(-n);
+//			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME: handle XYVertex
 			//g2.drawString(x+","+y, x+r+BORDERS, y+r+BORDERS+4);
 		}
 		if (n > 0) {
 			g2.setColor(hexgame.COLOURTWO);
 			g2.fillPolygon(hex(x,y));
-			g2.setColor(hexgame.COLOURTWOTXT);
-			c = (char)n;
-			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME handle XYVertex
+//			g2.setColor(hexgame.COLOURTWOTXT);
+//			c = (char)n;
+//			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME handle XYVertex
 			//g2.drawString(i+","+j, x+r+BORDERS, y+r+BORDERS+4);
 		}
 	}
@@ -143,8 +141,8 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 /*****************************************************************************
 * Name: pxtoHex (pixel to hex)
 * Parameters: mx, my. These are the co-ordinates of mouse click.
-* Returns: point. A point containing the coordinates of the hex that is clicked in.
-           If the point clicked is not a valid hex (ie. on the borders of the board, (-1,-1) is returned.
+* Returns: point. A point containing the co-ordinates of the hex that is clicked in.
+           If the point clicked is not a valid hex (i.e. on the borders of the board, (-1,-1) is returned.
 * Function: This only works for hexes in the FLAT orientation. The POINTY orientation would require
             a whole other function (different math).
             It takes into account the size of borders.
@@ -168,7 +166,6 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 
 		if (my - (x%2)*r < 0) return p; // prevent clicking in the open halfhexes at the top of the screen
 
-		//System.out.println("dx=" + dx + " dy=" + dy + "  > " + dx*r/t + " <");
 		
 		//even columns
 		if (x%2==0) {
@@ -191,7 +188,6 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 				}
 			}
 			if (dy < h) {	//top half of hexes
-				//System.out.println("" + (t- dx)*r/t +  " " + (dy - r));
 				if ((t - dx)*r/t > dy - r) {
 					x--;
 				}
