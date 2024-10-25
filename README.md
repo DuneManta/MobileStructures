@@ -23,7 +23,7 @@ The initial plan is to get a single tile working first. That way, the editor wil
 
 The task ahead will certainly be difficult. The chosen language of Java has been chosen as it is the same language in use by MegaMek, and I hope to be able to offer my app to their development team in the future if they are interested in integration with their project.
 
-**Development stage 1 - (Complete)**\
+**Development stage 1 - (complete)**\
 	Design early draft of UI of core structure page. - [UI draft available here](https://drive.google.com/file/d/1-miPgra_FQU7BXWDseNzAxUhhfAG6j2m/view?usp=sharing)\
 	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields.)\
  	Refactor code to use a class model.
@@ -34,7 +34,7 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 
 **Stage 3 - (in progress)**\
 	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted (complete)\
-	Create early draft of equipment page UI (in progress)
+	Create early draft of equipment page UI (in progress)\
  	Create easy to download and run package
 
 **Stage 4 - (not started)**\
