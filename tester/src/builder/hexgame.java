@@ -15,29 +15,16 @@ import java.awt.event.*;
 
 public class hexgame
 {
-  private hexgame() {
+  public hexgame() {
 		initGame();
 		createAndShowGUI();
-	}
-
-	public static void main(String[] args)
-	{
-		SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-				new hexgame();
-				}
-				});
 	}
 
 	//constants and global variables
 	final static Color COLOURBACK =  Color.GRAY;
 	final static Color COLOURCELL =  Color.WHITE;
-	final static Color COLOURGRID =  Color.BLACK;	 
-	final static Color COLOURONE = Color.WHITE;
-	final static Color COLOURONETXT = Color.BLUE;
+	final static Color COLOURGRID =  Color.BLACK;
 	final static Color COLOURTWO = new Color(119, 138, 255, 255);
-	final static Color COLOURTWOTXT = new Color(255,100,255);
-	final static int EMPTY = 0;
 	final static int BSIZE = 20; //board size.
 	final static int HEXSIZE = 36;	//hex size in pixels
 	final static int BORDERS = 15;
@@ -54,7 +41,7 @@ public class hexgame
 
 		for (int i=0;i<BSIZE;i++) {
 			for (int j=0;j<BSIZE;j++) {
-				board[i][j]=EMPTY;
+				board[i][j]=-1;
 			}
 		}
 
@@ -66,26 +53,20 @@ public class hexgame
 	{
 		DrawingPanel panel = new DrawingPanel();
 
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-		//JFrame.setDefaultLookAndFeelDecorated(true);
-		JFrame frame = new JFrame("Hex Testing 4");
+		JFrame frame = new JFrame("Grid Selector");
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		Container content = frame.getContentPane();
 		content.add(panel);
-		//this.add(panel);  -- cannot be done in a static context
-		//for hexes in the FLAT orientation, the height of a 10x10 grid is 1.1764 * the width. (from h / (s+t))
 		frame.setSize( (int)(SCRSIZE/1.23), SCRSIZE);
-		frame.setResizable(false);
-		frame.setLocationRelativeTo( null );
+		frame.setLocation( screenSize.width - frame.getWidth(), screenSize.height - frame.getHeight() - 50 );
 		frame.setVisible(true);
 	}
 
 
 	class DrawingPanel extends JPanel
-	{		
-		//mouse variables here
-		//Point mPt = new Point(0,0);
-
+	{
 		public DrawingPanel()
 		{	
 			setBackground(COLOURBACK);
@@ -98,7 +79,6 @@ public class hexgame
 		{
 			Graphics2D g2 = (Graphics2D)g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
 			super.paintComponent(g2);
 			//draw grid
 			for (int i=0;i<BSIZE;i++) {
@@ -122,7 +102,8 @@ public class hexgame
 				if (p.x < 0 || p.y < 0 || p.x >= BSIZE || p.y >= BSIZE) return;
 
 				//What do you want to do when a hexagon is clicked?
-				board[p.x][p.y] = 1;
+
+				board[p.x][p.y] *= -1;
 				repaint();
             }
 		} //end of MyMouseListener class 

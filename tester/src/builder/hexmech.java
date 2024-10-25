@@ -1,7 +1,6 @@
 package builder;
 
 import java.awt.*;
-import javax.swing.*;
 
 /* This is a companion class to hexgame.java. It handles all of the mechanics related to hexagon grids. */
 
@@ -17,8 +16,6 @@ public class hexmech
 	 */
 
 	//Constants
-	public final static boolean orFLAT= true;
-
 	public static boolean XYVertex=true;	//true: x,y are the co-ords of the first vertex.
 	//false: x,y are the co-ords of the top left rect. co-ord.
 
@@ -39,14 +36,8 @@ public class hexmech
 	/** This functions takes the Side length in pixels and uses that as the basic dimension of the hex.
             It calculates all other needed constants from this dimension.
 	*/
-	public static void setSide(int side) {
-		s=side;
-		t =  (int) (s / 2);			//t = s sin(30) = (int) CalculateH(s);
-		r =  (int) (s * 0.8660254037844);	//r = s cos(30) = (int) CalculateR(s); 
-		h=2*r;
-	}
 	public static void setHeight(int height) {
-		h = height;			// h = basic dimension: height (distance between two adj centresr aka size)
+		h = height;			// h = basic dimension: height (distance between two adj centres aka size)
 		r = h/2;			// r = radius of inscribed circle
 		s = (int) (h / 1.73205);	// s = (h/2)/cos(30)= (h/2) / (sqrt(3)/2) = h / sqrt(3)
 		t = (int) (r / 1.73205);	// t = (h/2) tan30 = (h/2) 1/sqrt(3) = h / (2 sqrt(3)) = r / sqrt(3)
@@ -85,7 +76,7 @@ and calculates all six of the points in the hexagon.
 
 /********************************************************************
 Name: drawHex()
-Parameters: (i,j) : the x,y coordinates of the inital point of the hexagon
+Parameters: (i,j) : the x,y coordinates of the initial point of the hexagon
 	    g2: the Graphics2D object to draw on.
 Returns: void
 Calls: hex() 
@@ -116,24 +107,20 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 	  The value of n is converted to letter and drawn in the hexagon.
 *****************************************************************************/
 	public static void fillHex(int i, int j, int n, Graphics2D g2) {
-//		char c='o';
 		int x = i * (s+t);
 		int y = j * h + (i%2) * h/2;
+		Polygon poly = hex(x,y);
 		if (n < 0) {
 			g2.setColor(hexgame.COLOURCELL);
 			g2.fillPolygon(hex(x,y));
-//			g2.setColor(hexgame.COLOURONETXT);
-//			c = (char)(-n);
-//			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME: handle XYVertex
-			//g2.drawString(x+","+y, x+r+BORDERS, y+r+BORDERS+4);
+			g2.setColor(hexgame.COLOURGRID);
+			g2.drawPolygon(poly);
 		}
 		if (n > 0) {
 			g2.setColor(hexgame.COLOURTWO);
 			g2.fillPolygon(hex(x,y));
-//			g2.setColor(hexgame.COLOURTWOTXT);
-//			c = (char)n;
-//			g2.drawString(""+c, x+r+BORDERS, y+r+BORDERS+4); //FIXME handle XYVertex
-			//g2.drawString(i+","+j, x+r+BORDERS, y+r+BORDERS+4);
+			g2.setColor(hexgame.COLOURGRID);
+			g2.drawPolygon(poly);
 		}
 	}
 
@@ -156,11 +143,11 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 		my -= BORDERS;
 		if (XYVertex) mx += t;
 
-		int x = (int) (mx / (s+t)); //this gives a quick value for x. It works only on odd cols and doesn't handle the triangle sections. It assumes that the hexagon is a rectangle with width s+t (=1.5*s).
-		int y = (int) ((my - (x%2)*r)/h); //this gives the row easily. It needs to be offset by h/2 (=r)if it is in an even column
+		int x = (mx / (s+t)); //this gives a quick value for x. It works only on odd cols and doesn't handle the triangle sections. It assumes that the hexagon is a rectangle with width s+t (=1.5*s).
+		int y = ((my - (x%2)*r)/h); //this gives the row easily. It needs to be offset by h/2 (=r)if it is in an even column
 
 		/******FIX for clicking in the triangle spaces (on the left side only)*******/
-		//dx,dy are the number of pixels from the hex boundary. (ie. relative to the hex clicked in)
+		//dx,dy are the number of pixels from the hex boundary. (i.e. relative to the hex clicked in)
 		int dx = mx - x*(s+t);
 		int dy = my - y*h;
 

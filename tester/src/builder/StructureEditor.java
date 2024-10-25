@@ -29,11 +29,12 @@ public class StructureEditor extends JFrame {
     private final Structure userStructure = new Structure();
 
     public StructureEditor() {
+        SwingUtilities.invokeLater(hexgame::new);
         setTitle("Mobile Structure Builder");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(contentPane);
         pack();
-        setLocationRelativeTo(null);
+//        setLocationRelativeTo(null);
 
         Calculate();
         SetFields();
