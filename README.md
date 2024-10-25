@@ -28,15 +28,16 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 	Create a console app that allows manual entry of core fields and makes stat calculations based on those fields.)\
  	Refactor code to use a class model.
 
-**Stage 2 - (in progress)**\
-	Develop a UI that incorporates the fields and outputs the information (complete)\
-	Create hex-grid display in non-functional/interactive form(in progress)
+**Stage 2 - (complete)**\
+	Develop a UI that incorporates the fields and outputs the information\
+	Create hex-grid display in non-functional/interactive form
 
-**Stage 3 - (ns)**\
-	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted\
-	Create early draft of equipment page UI
+**Stage 3 - (in progress)**\
+	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted (complete)\
+	Create early draft of equipment page UI (in progress)
+ 	Create easy to download and run package
 
-**Stage 4 - (ns)**\
+**Stage 4 - (not started)**\
 	Create ability to save and load structures
 
 **Stage 5 - (ns)**\
