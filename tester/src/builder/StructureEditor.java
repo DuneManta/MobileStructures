@@ -42,7 +42,7 @@ public class StructureEditor extends JFrame {
 
         // Listeners
         // Listener for structure type
-        structureType.addActionListener(_ -> {
+        structureType.addActionListener(e -> {
             userStructure.SetType((String) structureType.getSelectedItem());
             if (structureType.getSelectedItem() == "Fortress" && structureClass.getSelectedItem() == "Light") {
                 userStructure.SetStrClass("Medium");
@@ -54,62 +54,62 @@ public class StructureEditor extends JFrame {
         });
 
         // Listener for tech base
-        techBase.addActionListener(_ -> {
+        techBase.addActionListener(e -> {
             userStructure.SetTech((String) techBase.getSelectedItem());
             Calculate();
         });
 
         // Listener for class
-        structureClass.addActionListener(_ -> {
+        structureClass.addActionListener(e -> {
             userStructure.SetStrClass((String) structureClass.getSelectedItem());
             Calculate();
         });
 
         // Listener for hex spinner
-        structureSize.addChangeListener(_ -> {
+        structureSize.addChangeListener(e -> {
             userStructure.SetNumHexes((Integer) structureSize.getValue());
             Calculate();
         });
 
         // Listener for height spinner
-        height.addChangeListener(_ -> {
+        height.addChangeListener(e -> {
             userStructure.SetHeight((Integer) height.getValue());
             Calculate();
         });
 
         // Listener for construction factor
-        conFactor.addChangeListener(_ -> {
+        conFactor.addChangeListener(e -> {
             userStructure.SetCf((Integer) conFactor.getValue());
             Calculate();
         });
 
         // Listener for power system
-        powerSystem.addActionListener(_ -> {
+        powerSystem.addActionListener(e -> {
             FuelToggle();
             userStructure.SetEngine((String) powerSystem.getSelectedItem());
             Calculate();
         });
 
         // Listener for motive system
-        motive.addActionListener(_ -> {
+        motive.addActionListener(e -> {
             userStructure.SetMotive((String) motive.getSelectedItem());
             Calculate();
         });
 
         // Listener for range
-        fuel.addChangeListener(_ -> {
+        fuel.addChangeListener(e -> {
             userStructure.SetRange((Integer) fuel.getValue());
             Calculate();
         });
 
         // Listener for movement
-        movement.addChangeListener(_ -> {
+        movement.addChangeListener(e -> {
             userStructure.SetMoveSpeed((Double) movement.getValue());
             Calculate();
         });
 
         // Listener for fuel
-        fuel.addChangeListener(_ -> {
+        fuel.addChangeListener(e -> {
             userStructure.SetRange((Integer) fuel.getValue());
             Calculate();
         });
