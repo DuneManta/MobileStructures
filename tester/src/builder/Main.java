@@ -9,6 +9,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             StructureEditor structureEditor = new StructureEditor();
             structureEditor.setVisible(true);
+            SwingUtilities.invokeLater(hexgame::new);
         });
     }
 }
