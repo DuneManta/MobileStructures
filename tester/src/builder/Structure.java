@@ -1,8 +1,9 @@
 package builder;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Structure {
+public class Structure implements Serializable {
 
     // Arrays for storing the different values
     private final String[] typeArray = {"Hanger", "Building", "Fortress"};
@@ -104,6 +105,20 @@ public class Structure {
         SetEngine(engineArray[0]);
         SetMotive(motiveArray[0][0]);
         SetMoveSpeed(0.0);
+        CalculateWeights();
+    }
+
+    // Constructor for loading existing structure
+    public Structure(Structure input) {
+        SetType(input.type);
+        SetTech(input.tech);
+        SetStrClass(input.strClass);
+        SetNumHexes(input.numHexes);
+        SetHeight(input.height);
+        SetCf(input.conFactor);
+        SetEngine(input.engine);
+        SetMotive(input.motive);
+        SetMoveSpeed(input.moveSpeed);
         CalculateWeights();
     }
 
@@ -275,6 +290,7 @@ public class Structure {
                     availableMotives = motiveArray[0];
                 }
                 SetCfAndHex();
+                return;
             }
         }
     }
@@ -286,6 +302,7 @@ public class Structure {
                 techBasePowerMults = powerSystemMults[i];
                 motiveTechMults = motiveMults[i];
                 SetTechMults();
+                return;
             }
         }
     }
@@ -295,6 +312,7 @@ public class Structure {
             if (Objects.equals(availableClass, iClass)) {
                 strClass = availableClass;
                 SetCfAndHex();
+                return;
             }
         }
     }
@@ -307,6 +325,7 @@ public class Structure {
                 finalMotiveMult = motiveTechMults[i];
                 motiveIndex = i;
                 finalCrewMult = crewType[i];
+                return;
             }
         }
     }
@@ -325,6 +344,7 @@ public class Structure {
                 enginePowerMults = techBasePowerMults[i];
                 powerIndex = i;
                 finalPowerMult = enginePowerMults[motiveIndex];
+                return;
             }
         }
     }
@@ -345,9 +365,7 @@ public class Structure {
         conFactor = cf;
     }
 
-    public void SetRange(int range) {
-        this.range = range / 100;
-    }
+    public void SetRange(int range) { this.range = range / 100; }
 
 
     // Getters
@@ -400,7 +418,7 @@ public class Structure {
     }
 
     public int GetRange() {
-        return range * 100;
+        return this.range * 100;
     }
 
     public double GetSpeed() {
@@ -435,9 +453,7 @@ public class Structure {
         return availableMotives;
     }
 
-    public String GetMotive() {
-        return motive;
-    }
+    public String GetMotive() { return motive; }
 
     public double GetPowerPerHex() {
         return powerPerHex;
@@ -446,4 +462,10 @@ public class Structure {
     public double GetMotivePerHex() {
         return motivePerHex;
     }
+
+    public String GetType() { return type; }
+
+    public String GetTech() { return tech; }
+
+    public String GetEngine() { return engine; }
 }

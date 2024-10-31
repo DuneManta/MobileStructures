@@ -1,6 +1,11 @@
 package builder;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
 
 public class StructureEditor extends JFrame {
     private JPanel contentPane;
@@ -26,23 +31,13 @@ public class StructureEditor extends JFrame {
     private JLabel powerPerHex;
     private JLabel motivePerHex;
 
-    private final Structure userStructure = new Structure();
+    private static Structure userStructure = new Structure();
 
-    public StructureEditor() {
-        SwingUtilities.invokeLater(hexgame::new);
-        setTitle("Mobile Structure Builder");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(contentPane);
-        pack();
-//        setLocationRelativeTo(null);
-
-        Calculate();
-        SetFields();
-
-
-        // Listeners
-        // Listener for structure type
-        structureType.addActionListener(e -> {
+    // Listeners
+    // Listener for structure type
+    ActionListener typeBox = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             userStructure.SetType((String) structureType.getSelectedItem());
             if (structureType.getSelectedItem() == "Fortress" && structureClass.getSelectedItem() == "Light") {
                 userStructure.SetStrClass("Medium");
@@ -51,70 +46,135 @@ public class StructureEditor extends JFrame {
                 userStructure.SetMotive("Ground");
             }
             Calculate();
-        });
+        }
+    };
 
-        // Listener for tech base
-        techBase.addActionListener(e -> {
+    // Listener for tech base
+    ActionListener techBox = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             userStructure.SetTech((String) techBase.getSelectedItem());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for class
-        structureClass.addActionListener(e -> {
+    // Listener for class
+    ActionListener classBox = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             userStructure.SetStrClass((String) structureClass.getSelectedItem());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for hex spinner
-        structureSize.addChangeListener(e -> {
+    // Listener for hex spinner
+    ChangeListener hexSpin = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
             userStructure.SetNumHexes((Integer) structureSize.getValue());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for height spinner
-        height.addChangeListener(e -> {
+    // Listener for height spinner
+    ChangeListener heightSpin = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
             userStructure.SetHeight((Integer) height.getValue());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for construction factor
-        conFactor.addChangeListener(e -> {
+    // Listener for construction factor
+    ChangeListener cfSpin = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
             userStructure.SetCf((Integer) conFactor.getValue());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for power system
-        powerSystem.addActionListener(e -> {
+    // Listener for power system
+    ActionListener powerBox = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             FuelToggle();
             userStructure.SetEngine((String) powerSystem.getSelectedItem());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for motive system
-        motive.addActionListener(e -> {
+    // Listener for motive system
+    ActionListener motiveBox = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             userStructure.SetMotive((String) motive.getSelectedItem());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for range
-        fuel.addChangeListener(e -> {
-            userStructure.SetRange((Integer) fuel.getValue());
-            Calculate();
-        });
-
-        // Listener for movement
-        movement.addChangeListener(e -> {
+    // Listener for movement
+    ChangeListener moveSpin = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
             userStructure.SetMoveSpeed((Double) movement.getValue());
             Calculate();
-        });
+        }
+    };
 
-        // Listener for fuel
-        fuel.addChangeListener(e -> {
+    // Listener for fuel
+    ChangeListener fuelSpin = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
             userStructure.SetRange((Integer) fuel.getValue());
             Calculate();
-        });
+        }
+    };
+
+
+    public StructureEditor() {
+        setTitle("Mobile Structure Builder");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setContentPane(contentPane);
+        pack();
+        setJMenuBar(menuBar());
+        //setLocationRelativeTo(null);
+        Calculate();
+//        AddListeners();
     }
 
+    // Function to add listeners
+    private void AddListeners() {
+        structureType.addActionListener(typeBox);
+        techBase.addActionListener(techBox);
+        structureClass.addActionListener(classBox);
+        powerSystem.addActionListener(powerBox);
+        motive.addActionListener(motiveBox);
+        structureSize.addChangeListener(hexSpin);
+        height.addChangeListener(heightSpin);
+        conFactor.addChangeListener(cfSpin);
+        fuel.addChangeListener(fuelSpin);
+        movement.addChangeListener(moveSpin);
+    }
+
+    // Function to remove listeners
+    private void RemoveListeners() {
+        structureType.removeActionListener(typeBox);
+        techBase.removeActionListener(techBox);
+        structureClass.removeActionListener(classBox);
+        powerSystem.removeActionListener(powerBox);
+        motive.removeActionListener(motiveBox);
+        structureSize.removeChangeListener(hexSpin);
+        height.removeChangeListener(heightSpin);
+        conFactor.removeChangeListener(cfSpin);
+        fuel.removeChangeListener(fuelSpin);
+        movement.removeChangeListener(moveSpin);
+    }
+
+    // Function to reset all fields to default
+    public void Reset() {
+        userStructure = new Structure();
+    }
 
     // Function to enable or disable fuel spinner and output fields based on power system selection
     private void FuelToggle() {
@@ -122,13 +182,14 @@ public class StructureEditor extends JFrame {
         fuel.setEnabled(engine == "Steam" || engine == "Internal Combustion (ICE)" || engine == "Fuel Cell");
         fuelWeightLabel.setVisible(engine == "Steam" || engine == "Internal Combustion (ICE)" || engine == "Fuel Cell");
         fuelWeight.setVisible(engine == "Steam" || engine == "Internal Combustion (ICE)" || engine == "Fuel Cell");
-        if (engine == "Steam" || engine == "Internal Combustion (ICE)" || engine == "Fuel Cell") {
+        if (!(engine == "Steam" || engine == "Internal Combustion (ICE)" || engine == "Fuel Cell")) {
             userStructure.SetRange(0);
         }
     }
 
     // Function to call calculate weights and set UI selectors to new values based on selections
-    private void Calculate() {
+    public void Calculate() {
+        RemoveListeners();
         userStructure.CalculateWeights();
 
         // Model setups for fields that have changing parameters
@@ -173,6 +234,8 @@ public class StructureEditor extends JFrame {
             speedValue = userStructure.GetSpeed();
         }
 
+        int newRange = userStructure.GetRange();
+        System.out.println(newRange);
 
         // Spinner for number of hexes
         structureSize.setModel(new SpinnerNumberModel(hexValue, 2, userStructure.GetHexMax(), 1));
@@ -195,14 +258,20 @@ public class StructureEditor extends JFrame {
 
         // Combo box for motive
         motive.setModel(new DefaultComboBoxModel(userStructure.GetAvailableMotives()));
-        structureClass.setSelectedItem(userStructure.GetMotive());
+        motive.setSelectedItem(userStructure.GetMotive());
+
+        // Extra field setters for loading and resetting
+        structureType.setSelectedItem(userStructure.GetType());
+        techBase.setSelectedItem(userStructure.GetTech());
+        powerSystem.setSelectedItem(userStructure.GetEngine());
 
         userStructure.CalculateWeights();
 
         SetFields();
+        AddListeners();
     }
 
-    private void SetFields() {
+    public void SetFields() {
         hexWeight.setText(userStructure.GetHexWeight() + " Tons");
         totalWeight.setText(userStructure.GetTotalWeight() + " Tons");
         powerWeight.setText(userStructure.GetPowerWeight() + " Tons");
@@ -210,8 +279,85 @@ public class StructureEditor extends JFrame {
         remainingWeight.setText(userStructure.GetRemainingWeight() + " Tons");
         officers.setText(userStructure.GetOfficers() + " Officers");
         crew.setText(userStructure.GetCrew() + " Crew");
-        fuelWeight.setText(userStructure.GetFuelWeight() + " Tons");
+        fuelWeight.setText(String.format(String.format("%.1f", userStructure.GetFuelWeight())) + " Tons");
         powerPerHex.setText(userStructure.GetPowerPerHex() + " Tons per hex");
         motivePerHex.setText(userStructure.GetMotivePerHex() + " Tons per hex");
+    }
+
+    // Getter for object serialization
+    public static Structure GetUserStructure() {
+        return userStructure;
+    }
+
+    // Setter for loading object
+    public static void SetUserStructure(Structure input) {
+        userStructure = new Structure(input);
+    }
+
+    // Create menu bar
+    public JMenuBar menuBar() {
+        // Create menu bar
+        JMenuBar menuBar;
+        JMenu menu;
+        JMenuItem menuItem;
+
+        menuBar = new JMenuBar();
+
+        menu = new JMenu("File");
+        menuBar.add(menu);
+
+        menuItem = new JMenuItem("Save");
+        menuItem.addActionListener(e -> Save());
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Load");
+        menuItem.addActionListener(e -> {
+            Load();
+            Calculate();
+        });
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("Reset");
+        menuItem.addActionListener(e -> {
+            Reset();
+            Calculate();
+        });
+        menu.add(menuItem);
+
+        return menuBar;
+    }
+
+    // Save structure
+    public void Save() {
+        Structure str = StructureEditor.GetUserStructure();
+
+        try {
+            FileOutputStream fileOut = new FileOutputStream("structure.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(str);
+            out.close();
+            fileOut.close();
+            System.out.println("Saved successfully");
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    // Load structure
+    public void Load() {
+        try {
+            FileInputStream fileIn = new FileInputStream("structure.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            Structure structure = (Structure) in.readObject();
+            in.close();
+            fileIn.close();
+            StructureEditor.SetUserStructure(structure);
+            System.out.println("Loaded");
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("Structure class not found");
+            c.printStackTrace();
+        }
     }
 }
