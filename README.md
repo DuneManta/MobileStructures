@@ -35,9 +35,9 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 **Stage 3 - (in progress)**\
 	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted (complete)\
 	Create early draft of equipment page UI (in progress)\
- 	Create easy to download and run package
+ 	Create easy to download and run package (complete)
 
-**Stage 4 - (not started)**\
+**Stage 4 - (complete)**\
 	Create ability to save and load structures
 
 **Stage 5 - (ns)**\
