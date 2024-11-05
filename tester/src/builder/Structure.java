@@ -56,6 +56,7 @@ public class Structure implements Serializable {
     private String strClass;
     private String motive;
     private String engine;
+    private String name;
     private int numHexes;
     private int height;
     private int conFactor;
@@ -96,6 +97,7 @@ public class Structure implements Serializable {
 
     // Default constructor to establish a structure with basic settings
     public Structure() {
+        SetName("");
         SetType(typeArray[0]);
         SetTech(techArray[0]);
         SetStrClass(classArray[0][0]);
@@ -105,11 +107,11 @@ public class Structure implements Serializable {
         SetEngine(engineArray[0]);
         SetMotive(motiveArray[0][0]);
         SetMoveSpeed(0.0);
-        CalculateWeights();
     }
 
     // Constructor for loading existing structure
     public Structure(Structure input) {
+        SetName(input.name);
         SetType(input.type);
         SetTech(input.tech);
         SetStrClass(input.strClass);
@@ -119,7 +121,6 @@ public class Structure implements Serializable {
         SetEngine(input.engine);
         SetMotive(input.motive);
         SetMoveSpeed(input.moveSpeed);
-        CalculateWeights();
     }
 
 
@@ -367,6 +368,8 @@ public class Structure implements Serializable {
 
     public void SetRange(int range) { this.range = range / 100; }
 
+    public void SetName(String name) { this.name = name; }
+
 
     // Getters
     public String GetClass() {
@@ -381,9 +384,7 @@ public class Structure implements Serializable {
         return cfMax;
     }
 
-    public int GetHexMax() {
-        return hexMax;
-    }
+    public int GetHexMax() { return hexMax; }
 
     public int GetLevelMax() {
         return levelMax;
@@ -468,4 +469,6 @@ public class Structure implements Serializable {
     public String GetTech() { return tech; }
 
     public String GetEngine() { return engine; }
+
+    public String GetName() { return name; }
 }
