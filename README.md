@@ -32,17 +32,17 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 	Develop a UI that incorporates the fields and outputs the information\
 	Create hex-grid display in non-functional/interactive form
 
-**Stage 3 - (in progress)**\
-	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted (complete)\
-	Create early draft of equipment page UI (in progress)\
- 	Create easy to download and run package (complete)
+**Stage 3 - (complete)**\
+	Integrate functionality of hex-grid display, will allow for the selected hexes to be highlighted\
+	Create early draft of equipment page UI\
+ 	Create easy to download and run package
 
 **Stage 4 - (complete)**\
 	Create ability to save and load structures
 
-**Stage 5 - (ns)**\
-	Create method of attaching equipment to the structure\
-	Create test equipment items to make testing and troubleshooting easier
+**Stage 5 - (in progress)**\
+	Create method of attaching equipment to the structure (in progress)\
+	Create test equipment items to make testing and troubleshooting easier (not started)
 
 **Stage 6 - (ns)**\
 	Create method of selecting and storing information about individual hexes
