@@ -3,12 +3,14 @@ package builder;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
 public class StructureEditor extends JFrame {
-    private JPanel contentPane;
+    private JPanel structurePane;
     private JComboBox structureType;
     private JComboBox techBase;
     private JComboBox structureClass;
@@ -30,8 +32,15 @@ public class StructureEditor extends JFrame {
     private JLabel fuelWeightLabel;
     private JLabel powerPerHex;
     private JLabel motivePerHex;
+    private JTextField name;
 
-    private static Structure userStructure = new Structure();
+    private JList equipmentList;
+    private JList addedEquipment;
+    private JButton remove;
+    private JButton removeAll;
+    private JButton add;
+
+    public static Structure userStructure = new Structure();
 
     // Listeners
     // Listener for structure type
@@ -135,12 +144,11 @@ public class StructureEditor extends JFrame {
     public StructureEditor() {
         setTitle("Mobile Structure Builder");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(contentPane);
+        setContentPane(structurePane);
         pack();
         setJMenuBar(menuBar());
         //setLocationRelativeTo(null);
         Calculate();
-//        AddListeners();
     }
 
     // Function to add listeners
@@ -171,10 +179,6 @@ public class StructureEditor extends JFrame {
         movement.removeChangeListener(moveSpin);
     }
 
-    // Function to reset all fields to default
-    public void Reset() {
-        userStructure = new Structure();
-    }
 
     // Function to enable or disable fuel spinner and output fields based on power system selection
     private void FuelToggle() {
@@ -234,9 +238,6 @@ public class StructureEditor extends JFrame {
             speedValue = userStructure.GetSpeed();
         }
 
-        int newRange = userStructure.GetRange();
-        System.out.println(newRange);
-
         // Spinner for number of hexes
         structureSize.setModel(new SpinnerNumberModel(hexValue, 2, userStructure.GetHexMax(), 1));
 
@@ -264,6 +265,7 @@ public class StructureEditor extends JFrame {
         structureType.setSelectedItem(userStructure.GetType());
         techBase.setSelectedItem(userStructure.GetTech());
         powerSystem.setSelectedItem(userStructure.GetEngine());
+        name.setText(userStructure.GetName());
 
         userStructure.CalculateWeights();
 
@@ -285,12 +287,12 @@ public class StructureEditor extends JFrame {
     }
 
     // Getter for object serialization
-    public static Structure GetUserStructure() {
+    public Structure GetUserStructure() {
         return userStructure;
     }
 
     // Setter for loading object
-    public static void SetUserStructure(Structure input) {
+    public void SetUserStructure(Structure input) {
         userStructure = new Structure(input);
     }
 
@@ -329,10 +331,11 @@ public class StructureEditor extends JFrame {
 
     // Save structure
     public void Save() {
-        Structure str = StructureEditor.GetUserStructure();
+        userStructure.SetName(name.getText());
+        Structure str = GetUserStructure();
 
         try {
-            FileOutputStream fileOut = new FileOutputStream("structure.ser");
+            FileOutputStream fileOut = new FileOutputStream("structures/" + userStructure.GetName() + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(str);
             out.close();
@@ -346,12 +349,26 @@ public class StructureEditor extends JFrame {
     // Load structure
     public void Load() {
         try {
-            FileInputStream fileIn = new FileInputStream("structure.ser");
+            FileDialog dialog = new FileDialog((Frame)null, "Select structure to load");
+            dialog.setMode(FileDialog.LOAD);
+            String relativePath = "structures";
+            File currentDirectory = new File(".");
+            File targetDirectory = new File(currentDirectory, relativePath);
+            dialog.setDirectory(targetDirectory.getAbsolutePath());
+            dialog.setFile("*.ser");
+            dialog.setVisible(true);
+            String file = dialog.getFile();
+            dialog.dispose();
+            System.out.println(file);
+
+            FileInputStream fileIn = new FileInputStream("structures/" + file);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             Structure structure = (Structure) in.readObject();
             in.close();
             fileIn.close();
-            StructureEditor.SetUserStructure(structure);
+            SetUserStructure(structure);
+            Calculate();
+            FuelToggle();
             System.out.println("Loaded");
         } catch (IOException i) {
             i.printStackTrace();
@@ -359,5 +376,11 @@ public class StructureEditor extends JFrame {
             System.out.println("Structure class not found");
             c.printStackTrace();
         }
+    }
+
+    // Function to reset all fields to default
+    public void Reset() {
+        userStructure = null;
+        userStructure = new Structure();
     }
 }

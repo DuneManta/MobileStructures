@@ -95,15 +95,31 @@ public class hexgame
 		}
 
 		class MyMouseListener extends MouseAdapter	{	//inner class inside DrawingPanel 
-			public void mouseClicked(MouseEvent e) { 
-				int x = e.getX(); 
+			public void mouseClicked(MouseEvent e) {
+				int x = e.getX();
 				int y = e.getY();
 				Point p = new Point( hexmech.pxtoHex(x,y) );
 				if (p.x < 0 || p.y < 0 || p.x >= BSIZE || p.y >= BSIZE) return;
 
-				//What do you want to do when a hexagon is clicked?
+				int filledHexes = 0;
+				int availableHexes = StructureEditor.userStructure.GetNumHexes();
+				for (int i = 0; i < BSIZE; i++) {
+					for (int j = 0; j < BSIZE; j++) {
+						if (board[i][j] == 1) {
+							filledHexes++;
+						}
+					}
+				}
 
-				board[p.x][p.y] *= -1;
+				if (availableHexes == 2 && filledHexes == 2) {
+					return;
+				}
+				if (filledHexes < availableHexes) {
+					board[p.x][p.y] *= -1;
+				} else {
+					board[p.x][p.y] = -1;
+				}
+
 				repaint();
             }
 		} //end of MyMouseListener class 
