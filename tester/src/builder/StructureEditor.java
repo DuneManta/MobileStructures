@@ -3,11 +3,11 @@ package builder;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.Arrays;
 
 public class StructureEditor extends JFrame {
     private JPanel structurePane;
@@ -72,6 +72,9 @@ public class StructureEditor extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             userStructure.SetStrClass((String) structureClass.getSelectedItem());
+            if (structureClass.getSelectedItem() == "Hardened" && motive.getSelectedItem() == "Air") {
+                userStructure.SetMotive("Ground");
+            }
             Calculate();
         }
     };
@@ -195,6 +198,7 @@ public class StructureEditor extends JFrame {
     public void Calculate() {
         RemoveListeners();
         userStructure.CalculateWeights();
+        userStructure.SetName(name.getText());
 
         // Model setups for fields that have changing parameters
         // Check for current values that are out of bounds and adjust
@@ -261,8 +265,11 @@ public class StructureEditor extends JFrame {
         motive.setModel(new DefaultComboBoxModel(userStructure.GetAvailableMotives()));
         motive.setSelectedItem(userStructure.GetMotive());
 
-        // Extra field setters for loading and resetting
+        // Combo box for type
+        structureType.setModel(new DefaultComboBoxModel(userStructure.GetAvailableTypes()));
         structureType.setSelectedItem(userStructure.GetType());
+
+        // Extra field setters for loading and resetting
         techBase.setSelectedItem(userStructure.GetTech());
         powerSystem.setSelectedItem(userStructure.GetEngine());
         name.setText(userStructure.GetName());
@@ -331,7 +338,6 @@ public class StructureEditor extends JFrame {
 
     // Save structure
     public void Save() {
-        userStructure.SetName(name.getText());
         Structure str = GetUserStructure();
 
         try {
@@ -349,19 +355,7 @@ public class StructureEditor extends JFrame {
     // Load structure
     public void Load() {
         try {
-            FileDialog dialog = new FileDialog((Frame)null, "Select structure to load");
-            dialog.setMode(FileDialog.LOAD);
-            String relativePath = "structures";
-            File currentDirectory = new File(".");
-            File targetDirectory = new File(currentDirectory, relativePath);
-            dialog.setDirectory(targetDirectory.getAbsolutePath());
-            dialog.setFile("*.ser");
-            dialog.setVisible(true);
-            String file = dialog.getFile();
-            dialog.dispose();
-            System.out.println(file);
-
-            FileInputStream fileIn = new FileInputStream("structures/" + file);
+            FileInputStream fileIn = getFileInputStream();
             ObjectInputStream in = new ObjectInputStream(fileIn);
             Structure structure = (Structure) in.readObject();
             in.close();
@@ -376,6 +370,21 @@ public class StructureEditor extends JFrame {
             System.out.println("Structure class not found");
             c.printStackTrace();
         }
+    }
+
+    private FileInputStream getFileInputStream() throws FileNotFoundException {
+        FileDialog dialog = new FileDialog((Frame)null, "Select structure to load");
+        dialog.setMode(FileDialog.LOAD);
+        String relativePath = "structures";
+        File currentDirectory = new File(".");
+        File targetDirectory = new File(currentDirectory, relativePath);
+        dialog.setDirectory(targetDirectory.getAbsolutePath());
+        dialog.setFile("*.ser");
+        dialog.setVisible(true);
+        String file = dialog.getFile();
+        dialog.dispose();
+
+        return new FileInputStream("structures/" + file);
     }
 
     // Function to reset all fields to default
