@@ -6,16 +6,20 @@ import java.util.Objects;
 public class Structure implements Serializable {
 
     // Arrays for storing the different values
-    private final String[] typeArray = {"Hanger", "Building", "Fortress"};
     private final String[] techArray = {"Inner Sphere", "Clan"};
     private final String[] engineArray = {"Steam", "Internal Combustion (ICE)", "Fuel Cell", "Fission", "Fusion"};
+    private final String[][] typeArray = {
+            {"Hanger", "Building", "Fortress"},
+            {"Hanger", "Building"}
+    };
     private final String[][] motiveArray = {
             {"Ground", "Air", "Water - Surface", "Water - Submersible"},
             {"Ground", "Water - Surface", "Water - Submersible"}
     };
     private final String[][] classArray = {
             {"Light", "Medium", "Heavy", "Hardened"},
-            {"Medium", "Heavy", "Hardened"}
+            {"Medium", "Heavy", "Hardened"},
+            {"Light", "Medium", "Heavy"}
     };
 
     private final double[] strTypeMults = {0.3, 0.5, 1};
@@ -93,12 +97,14 @@ public class Structure implements Serializable {
     private double finalMotiveMult;
     private String[] availableClasses;
     private String[] availableMotives;
+    private String[] availableTypes;
 
 
     // Default constructor to establish a structure with basic settings
     public Structure() {
         SetName("");
-        SetType(typeArray[0]);
+        availableTypes = typeArray[0];
+        SetType(typeArray[0][0]);
         SetTech(techArray[0]);
         SetStrClass(classArray[0][0]);
         SetNumHexes(2);
@@ -278,12 +284,12 @@ public class Structure implements Serializable {
 
     // Setters
     public void SetType(String type) {
-        for (int i = 0; i < typeArray.length; i++) {
-            if (Objects.equals(typeArray[i], type)) {
-                this.type = typeArray[i];
+        for (int i = 0; i < availableTypes.length; i++) {
+            if (Objects.equals(availableTypes[i], type)) {
+                this.type = availableTypes[i];
                 strWeightMult = strTypeMults[i];
                 crewType = crewMults[i];
-                if (i == 2) {
+                if (Objects.equals(type, "Fortress")) {
                     availableClasses = classArray[1];
                     availableMotives = motiveArray[1];
                 } else {
@@ -311,6 +317,11 @@ public class Structure implements Serializable {
     public void SetStrClass(String iClass) {
         for (String availableClass : availableClasses) {
             if (Objects.equals(availableClass, iClass)) {
+                if (Objects.equals(iClass, "Hardened") || Objects.equals(type, "Fortress")) {
+                    availableMotives = motiveArray[1];
+                } else{
+                    availableMotives = motiveArray[0];
+                }
                 strClass = availableClass;
                 SetCfAndHex();
                 return;
@@ -321,6 +332,13 @@ public class Structure implements Serializable {
     public void SetMotive(String motive) {
         for (int i = 0; i < availableMotives.length; i++) {
             if (Objects.equals(availableMotives[i], motive)) {
+                if (Objects.equals(motive, "Air")) {
+                    availableClasses = classArray[2];
+                    availableTypes = typeArray[1];
+                } else {
+                    availableClasses = classArray[0];
+                    availableTypes = typeArray[0];
+                }
                 this.motive = availableMotives[i];
                 setMoveMax();
                 finalMotiveMult = motiveTechMults[i];
@@ -454,15 +472,15 @@ public class Structure implements Serializable {
         return availableMotives;
     }
 
+    public String[] GetAvailableTypes() {
+        return availableTypes;
+    }
+
     public String GetMotive() { return motive; }
 
-    public double GetPowerPerHex() {
-        return powerPerHex;
-    }
+    public double GetPowerPerHex() { return powerPerHex; }
 
-    public double GetMotivePerHex() {
-        return motivePerHex;
-    }
+    public double GetMotivePerHex() { return motivePerHex; }
 
     public String GetType() { return type; }
 
