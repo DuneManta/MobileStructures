@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.Arrays;
 
 public class StructureEditor extends JFrame {
     private JPanel structurePane;
@@ -33,12 +32,6 @@ public class StructureEditor extends JFrame {
     private JLabel powerPerHex;
     private JLabel motivePerHex;
     private JTextField name;
-
-    private JList equipmentList;
-    private JList addedEquipment;
-    private JButton remove;
-    private JButton removeAll;
-    private JButton add;
 
     public static Structure userStructure = new Structure();
 
@@ -145,13 +138,20 @@ public class StructureEditor extends JFrame {
 
 
     public StructureEditor() {
+        JTabbedPane tabbedPane = new JTabbedPane();
+
         setTitle("Mobile Structure Builder");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(structurePane);
+        tabbedPane.addTab("Structure", null, structurePane);
+        tabbedPane.addTab("Equipment", null, equipmentPane);
+        setContentPane(tabbedPane);
         pack();
         setJMenuBar(menuBar());
         //setLocationRelativeTo(null);
         Calculate();
+
+        CreateEquipmentLists();
+        AddEquipmentListeners();
     }
 
     // Function to add listeners
@@ -391,5 +391,44 @@ public class StructureEditor extends JFrame {
     public void Reset() {
         userStructure = null;
         userStructure = new Structure();
+    }
+
+/* Division between the structure panel functions and equipment panel functions. Will play around with separating into separate files later. */
+
+    private JList equipmentList;
+    private JList addedEquipment;
+    private JPanel equipmentPane;
+    private JButton removeButton;
+    private JButton removeAll;
+    private JButton addButton;
+
+    DefaultListModel<Object> leftModel = new DefaultListModel<>();
+    DefaultListModel<Object> rightModel = new DefaultListModel<>();
+
+    private void AddEquipmentListeners() {
+        addButton.addActionListener(e -> {
+            for (Object selectedValue:equipmentList.getSelectedValuesList()) {
+                leftModel.addElement(selectedValue);
+            }
+        });
+
+        removeButton.addActionListener(e -> {
+            for (Object selectedValue:addedEquipment.getSelectedValuesList()) {
+                leftModel.removeElement(selectedValue);
+            }
+        });
+
+        removeAll.addActionListener(e -> {
+            leftModel.removeAllElements();
+        });
+    }
+
+    private void CreateEquipmentLists() {
+        rightModel.addElement("SRM 2");
+        rightModel.addElement("Small Laser");
+        rightModel.addElement("AC/2");
+
+        equipmentList.setModel(rightModel);
+        addedEquipment.setModel(leftModel);
     }
 }
