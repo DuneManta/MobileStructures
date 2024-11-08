@@ -40,14 +40,14 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 **Stage 4 - (complete)**\
 	Create ability to save and load structures
 
-**Stage 5 - (in progress)**\
-	Create method of attaching equipment to the structure (in progress)\
-	Create test equipment items to make testing and troubleshooting easier (not started)
+**Stage 5 - (complete)**\
+	Create method of attaching equipment to the structure\
+	Create test equipment items to make testing and troubleshooting easier
 
-**Stage 6 - (ns)**\
-	Create method of selecting and storing information about individual hexes
-	Finish work on equipment and other needed modules\
-	Prepare for initial build release
+**Stage 6 - (in progress)**\
+	Create method of selecting and storing information about individual hexes (not started)\
+	Finish work on equipment and other needed modules (not started)\
+ 	Create method to verify selected hexes are adjacent to other hexes (in progress)
 
  **Stage 7 - (ns)**\
  	Prepare for initial build release
