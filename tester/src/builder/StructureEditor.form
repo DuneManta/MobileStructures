@@ -437,11 +437,9 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="fc3cc" class="javax.swing.JList" binding="equipmentList">
+                  <component id="bcec4" class="javax.swing.JTable" binding="equipmentList">
                     <constraints/>
-                    <properties>
-                      <model/>
-                    </properties>
+                    <properties/>
                   </component>
                 </children>
               </scrollpane>
