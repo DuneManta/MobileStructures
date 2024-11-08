@@ -3,6 +3,7 @@ package builder;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -149,6 +150,7 @@ public class StructureEditor extends JFrame {
         setJMenuBar(menuBar());
         //setLocationRelativeTo(null);
         Calculate();
+        CreateTable();
 
         CreateEquipmentLists();
         AddEquipmentListeners();
@@ -395,21 +397,21 @@ public class StructureEditor extends JFrame {
 
 /* Division between the structure panel functions and equipment panel functions. Will play around with separating into separate files later. */
 
-    private JList equipmentList;
     private JList addedEquipment;
     private JPanel equipmentPane;
     private JButton removeButton;
     private JButton removeAll;
     private JButton addButton;
+    private JTable equipmentList;
 
     DefaultListModel<Object> leftModel = new DefaultListModel<>();
-    DefaultListModel<Object> rightModel = new DefaultListModel<>();
 
     private void AddEquipmentListeners() {
         addButton.addActionListener(e -> {
-            for (Object selectedValue:equipmentList.getSelectedValuesList()) {
-                leftModel.addElement(selectedValue);
-            }
+            int column = 0;
+            int row = equipmentList.getSelectedRow();
+            String name = equipmentList.getValueAt(row, column).toString();
+            leftModel.addElement(name);
         });
 
         removeButton.addActionListener(e -> {
@@ -418,17 +420,50 @@ public class StructureEditor extends JFrame {
             }
         });
 
-        removeAll.addActionListener(e -> {
-            leftModel.removeAllElements();
-        });
+        removeAll.addActionListener(e -> leftModel.removeAllElements());
     }
 
     private void CreateEquipmentLists() {
-        rightModel.addElement("SRM 2");
-        rightModel.addElement("Small Laser");
-        rightModel.addElement("AC/2");
-
-        equipmentList.setModel(rightModel);
         addedEquipment.setModel(leftModel);
+    }
+
+    private void CreateTable() {
+         equipmentList.setFillsViewportHeight(true);
+         equipmentList.setRowSelectionAllowed(true);
+         equipmentList.setSelectionMode(1);
+         equipmentList.setModel(new MyTableModel());
+         equipmentList.setVisible(true);
+         equipmentList.changeSelection(0, 0, false, false);
+    }
+
+    private static class MyTableModel extends AbstractTableModel {
+        private final String[] columnNames = {
+                "Name",
+                "Range",
+                "Damage",
+                "Weight"
+        };
+
+        private final Object[][] data = {
+                {"SRM 2", "3/6/9", "2 c/2", "1"},
+                {"Small laser", "1/2/3", "3", "0.5"},
+                {"AC/2", "8/16/24", "2", "6"}
+        };
+
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        public int getRowCount() {
+            return data.length;
+        }
+
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        public Object getValueAt(int row, int col) {
+            return data[row][col];
+        }
     }
 }
