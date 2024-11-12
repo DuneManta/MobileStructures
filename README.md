@@ -45,9 +45,9 @@ The task ahead will certainly be difficult. The chosen language of Java has been
 	Create test equipment items to make testing and troubleshooting easier
 
 **Stage 6 - (in progress)**\
-	Create method of selecting and storing information about individual hexes (not started)\
+	Create method of selecting and storing information about individual hexes (in progress)\
 	Finish work on equipment and other needed modules (not started)\
- 	Create method to verify selected hexes are adjacent to other hexes (in progress)
+ 	Create method to verify selected hexes are adjacent to other hexes (complete)
 
  **Stage 7 - (ns)**\
  	Prepare for initial build release
