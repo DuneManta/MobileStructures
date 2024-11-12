@@ -98,6 +98,7 @@ public class hexgame
 			public void mouseClicked(MouseEvent e) {
 				int x = e.getX();
 				int y = e.getY();
+				boolean adjacentFlag = false;
 				Point p = new Point( hexmech.pxtoHex(x,y) );
 				if (p.x < 0 || p.y < 0 || p.x >= BSIZE || p.y >= BSIZE) return;
 
@@ -107,14 +108,23 @@ public class hexgame
 					for (int j = 0; j < BSIZE; j++) {
 						if (board[i][j] == 1) {
 							filledHexes++;
+							if (((p.x - 1 == i) || (p.x + 1 == i) || (p.x == i)) && ((p.y - 1 == j) || p.y + 1 == j) || (p.y == j)) {
+								adjacentFlag = true;
+							}
 						}
 					}
+				}
+
+				if (!adjacentFlag) {
+					return;
 				}
 
 				if (availableHexes == 2 && filledHexes == 2) {
 					return;
 				}
-				if (filledHexes < availableHexes) {
+				if (filledHexes == 2) {
+					board[p.x][p.y] = 1;
+				} else if (filledHexes < availableHexes) {
 					board[p.x][p.y] *= -1;
 				} else {
 					board[p.x][p.y] = -1;
