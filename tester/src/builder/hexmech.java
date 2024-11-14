@@ -112,13 +112,19 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 		Polygon poly = hex(x,y);
 		if (n < 0) {
 			g2.setColor(hexgame.COLOURCELL);
-			g2.fillPolygon(hex(x,y));
+			g2.fillPolygon(poly);
 			g2.setColor(hexgame.COLOURGRID);
 			g2.drawPolygon(poly);
 		}
 		if (n > 0) {
 			g2.setColor(hexgame.COLOURTWO);
-			g2.fillPolygon(hex(x,y));
+			g2.fillPolygon(poly);
+			g2.setColor(hexgame.COLOURGRID);
+			g2.drawPolygon(poly);
+		}
+		if (n == 0) {
+			g2.setColor(hexgame.COLOURTHREE);
+			g2.fillPolygon(poly);
 			g2.setColor(hexgame.COLOURGRID);
 			g2.drawPolygon(poly);
 		}
@@ -146,7 +152,6 @@ The hexagon is drawn in the colour specified in hexgame.COLOURELL.
 		int x = (mx / (s+t)); //this gives a quick value for x. It works only on odd cols and doesn't handle the triangle sections. It assumes that the hexagon is a rectangle with width s+t (=1.5*s).
 		int y = ((my - (x%2)*r)/h); //this gives the row easily. It needs to be offset by h/2 (=r)if it is in an even column
 
-		/******FIX for clicking in the triangle spaces (on the left side only)*******/
 		//dx,dy are the number of pixels from the hex boundary. (i.e. relative to the hex clicked in)
 		int dx = mx - x*(s+t);
 		int dy = my - y*h;

@@ -403,6 +403,7 @@ public class StructureEditor extends JFrame {
     private JButton removeAll;
     private JButton addButton;
     private JTable equipmentList;
+    private JTabbedPane tabContainer;
 
     DefaultListModel<Object> leftModel = new DefaultListModel<>();
 
@@ -421,6 +422,13 @@ public class StructureEditor extends JFrame {
         });
 
         removeAll.addActionListener(e -> leftModel.removeAllElements());
+
+        tabContainer.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                System.out.println("TEST");
+            }
+        });
     }
 
     private void CreateEquipmentLists() {

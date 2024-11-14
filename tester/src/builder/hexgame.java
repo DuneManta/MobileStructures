@@ -25,6 +25,7 @@ public class hexgame
 	final static Color COLOURCELL =  Color.WHITE;
 	final static Color COLOURGRID =  Color.BLACK;
 	final static Color COLOURTWO = new Color(119, 138, 255, 255);
+	final static Color COLOURTHREE = Color.RED;
 	final static int BSIZE = 20; //board size.
 	final static int HEXSIZE = 36;	//hex size in pixels
 	final static int BORDERS = 15;
@@ -108,7 +109,11 @@ public class hexgame
 					for (int j = 0; j < BSIZE; j++) {
 						if (board[i][j] == 1) {
 							filledHexes++;
-							if (((p.x - 1 == i) || (p.x + 1 == i) || (p.x == i)) && ((p.y - 1 == j) || p.y + 1 == j) || (p.y == j)) {
+							if ((p.x == i) && ((p.y + 1 == j) || (p.y - 1 == j))) {
+								adjacentFlag = true;
+							} else if ((p.x % 2 != 0) && ((p.x - 1 == i) || (p.x + 1 == i)) && ((p.y + 1 == j) || (p.y == j))) {
+								adjacentFlag = true;
+							} else if ((p.x % 2 == 0) && ((p.x - 1 == i) || (p.x + 1 == i)) && ((p.y - 1 == j) || (p.y == j))) {
 								adjacentFlag = true;
 							}
 						}
