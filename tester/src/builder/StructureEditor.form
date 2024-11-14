@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="builder.StructureEditor">
-  <tabbedpane id="54f36">
+  <tabbedpane id="54f36" binding="tabContainer">
     <constraints>
       <xy x="313" y="21" width="1500" height="800"/>
     </constraints>
