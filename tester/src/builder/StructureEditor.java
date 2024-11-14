@@ -7,6 +7,8 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.*;
 
 public class StructureEditor extends JFrame {
@@ -33,6 +35,8 @@ public class StructureEditor extends JFrame {
     private JLabel powerPerHex;
     private JLabel motivePerHex;
     private JTextField name;
+
+    private static boolean tabsFlag;
 
     public static Structure userStructure = new Structure();
 
@@ -423,10 +427,25 @@ public class StructureEditor extends JFrame {
 
         removeAll.addActionListener(e -> leftModel.removeAllElements());
 
-        tabContainer.addChangeListener(new ChangeListener() {
+        equipmentPane.addComponentListener(new ComponentListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
-                System.out.println("TEST");
+            public void componentResized(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+                tabsFlag = true;
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                tabsFlag = false;
             }
         });
     }
@@ -473,5 +492,9 @@ public class StructureEditor extends JFrame {
         public Object getValueAt(int row, int col) {
             return data[row][col];
         }
+    }
+
+    public static boolean GetTabFlag() {
+        return tabsFlag;
     }
 }

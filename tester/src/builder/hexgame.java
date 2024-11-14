@@ -100,39 +100,54 @@ public class hexgame
 				int x = e.getX();
 				int y = e.getY();
 				boolean adjacentFlag = false;
+				boolean tabFlag = StructureEditor.GetTabFlag();
 				Point p = new Point( hexmech.pxtoHex(x,y) );
 				if (p.x < 0 || p.y < 0 || p.x >= BSIZE || p.y >= BSIZE) return;
 
-				int filledHexes = 0;
-				int availableHexes = StructureEditor.userStructure.GetNumHexes();
-				for (int i = 0; i < BSIZE; i++) {
-					for (int j = 0; j < BSIZE; j++) {
-						if (board[i][j] == 1) {
-							filledHexes++;
-							if ((p.x == i) && ((p.y + 1 == j) || (p.y - 1 == j))) {
-								adjacentFlag = true;
-							} else if ((p.x % 2 != 0) && ((p.x - 1 == i) || (p.x + 1 == i)) && ((p.y + 1 == j) || (p.y == j))) {
-								adjacentFlag = true;
-							} else if ((p.x % 2 == 0) && ((p.x - 1 == i) || (p.x + 1 == i)) && ((p.y - 1 == j) || (p.y == j))) {
-								adjacentFlag = true;
+				if (!tabFlag) {
+					int filledHexes = 0;
+					int availableHexes = StructureEditor.userStructure.GetNumHexes();
+					for (int i = 0; i < BSIZE; i++) {
+						for (int j = 0; j < BSIZE; j++) {
+							if (board[i][j] == 1) {
+								filledHexes++;
+								if ((p.x == i) && ((p.y + 1 == j) || (p.y - 1 == j))) {
+									adjacentFlag = true;
+								} else if ((p.x % 2 != 0) && ((p.x - 1 == i) || (p.x + 1 == i)) && ((p.y + 1 == j) || (p.y == j))) {
+									adjacentFlag = true;
+								} else if ((p.x % 2 == 0) && ((p.x - 1 == i) || (p.x + 1 == i)) && ((p.y - 1 == j) || (p.y == j))) {
+									adjacentFlag = true;
+								}
 							}
 						}
 					}
-				}
-
-				if (!adjacentFlag) {
-					return;
-				}
-
-				if (availableHexes == 2 && filledHexes == 2) {
-					return;
-				}
-				if (filledHexes == 2) {
-					board[p.x][p.y] = 1;
-				} else if (filledHexes < availableHexes) {
-					board[p.x][p.y] *= -1;
+					if (!adjacentFlag) {
+						return;
+					}
+					if (availableHexes == 2 && filledHexes == 2) {
+						return;
+					}
+					if (filledHexes == 2) {
+						board[p.x][p.y] = 1;
+					} else if (filledHexes < availableHexes) {
+						board[p.x][p.y] *= -1;
+					} else {
+						board[p.x][p.y] = -1;
+					}
 				} else {
-					board[p.x][p.y] = -1;
+					for (int i = 0; i < BSIZE; i++) {
+						for (int j = 0; j < BSIZE; j++) {
+							if (board[p.x][p.y] == -1) {
+								return;
+							}
+							if (board[i][j] == 0) {
+								board[i][j] = 1;
+							}
+							if (board[p.x][p.y] == 1) {
+								board[i][j] = 0;
+							}
+						}
+					}
 				}
 
 				repaint();
