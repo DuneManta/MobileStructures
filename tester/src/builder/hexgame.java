@@ -131,6 +131,9 @@ public class hexgame
 						board[p.x][p.y] = 1;
 					} else if (filledHexes < availableHexes) {
 						board[p.x][p.y] *= -1;
+						if (board[p.x][p.y] == 0) {
+							board[p.x][p.y] = -1;
+						}
 					} else {
 						board[p.x][p.y] = -1;
 					}
@@ -143,7 +146,7 @@ public class hexgame
 							if (board[i][j] == 0) {
 								board[i][j] = 1;
 							}
-							if (board[p.x][p.y] == 1) {
+							if (board[i][j] == 1 && p.x == i && p.y == j) {
 								board[i][j] = 0;
 							}
 						}

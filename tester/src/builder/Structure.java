@@ -52,6 +52,9 @@ public class Structure implements Serializable {
             {4, 0, 5, 6}
     };
 
+    // Array for selected hexes
+    private static HexClass[][] hexes = new HexClass[hexgame.BSIZE][hexgame.BSIZE];
+
 
     // Variables for selected values
     // Final value variables
@@ -70,6 +73,8 @@ public class Structure implements Serializable {
     private int crew;
     private int officers;
     private int totalCrew;
+    private int armorPoints;
+    private double armorWeight;
     private double motiveWeight;
     private double engineWeight;
     private double fuelWeight;
@@ -113,6 +118,7 @@ public class Structure implements Serializable {
         SetEngine(engineArray[0]);
         SetMotive(motiveArray[0][0]);
         SetMoveSpeed(0.0);
+        SetArmor(0);
     }
 
     // Constructor for loading existing structure
@@ -127,6 +133,7 @@ public class Structure implements Serializable {
         SetEngine(input.engine);
         SetMotive(input.motive);
         SetMoveSpeed(input.moveSpeed);
+        SetArmor(input.armorPoints);
     }
 
 
@@ -259,8 +266,29 @@ public class Structure implements Serializable {
         // Calculate fuel weight
         fuelWeight = range * fuelMult * engineWeight;
 
+        // Calculate armor weight
+        armorWeight = CalculateArmorWeight(armorPoints);
+
         // Calculate remaining tonnage space after distributing motive and power system weights
-        remainingWeight = hexWeight - RoundUpToHalf(engineWeight, numHexes) - RoundUpToHalf(motiveWeight, numHexes);
+        remainingWeight = hexWeight - RoundUpToHalf(engineWeight, numHexes) - RoundUpToHalf(motiveWeight, numHexes) - armorWeight;
+    }
+
+    private double CalculateArmorWeight(int armorPoints) {
+        double armorWeight = 0;
+        int divider;
+        if (Objects.equals(tech, "Clan")) {
+            divider = 20;
+        } else {
+            divider = 16;
+        }
+        if (armorPoints == 0) {
+            return 0;
+        }
+        do {
+            armorWeight++;
+            armorPoints -= divider;
+        } while (armorPoints > 0);
+        return armorWeight;
     }
 
     private double RoundUpToHalf(double num1, double num2) {
@@ -297,7 +325,6 @@ public class Structure implements Serializable {
                     availableMotives = motiveArray[0];
                 }
                 SetCfAndHex();
-                return;
             }
         }
     }
@@ -309,7 +336,6 @@ public class Structure implements Serializable {
                 techBasePowerMults = powerSystemMults[i];
                 motiveTechMults = motiveMults[i];
                 SetTechMults();
-                return;
             }
         }
     }
@@ -324,7 +350,6 @@ public class Structure implements Serializable {
                 }
                 strClass = availableClass;
                 SetCfAndHex();
-                return;
             }
         }
     }
@@ -344,7 +369,6 @@ public class Structure implements Serializable {
                 finalMotiveMult = motiveTechMults[i];
                 motiveIndex = i;
                 finalCrewMult = crewType[i];
-                return;
             }
         }
     }
@@ -363,118 +387,69 @@ public class Structure implements Serializable {
                 enginePowerMults = techBasePowerMults[i];
                 powerIndex = i;
                 finalPowerMult = enginePowerMults[motiveIndex];
-                return;
             }
         }
     }
 
-    public void SetMoveSpeed(double speed) {
-        moveSpeed = speed;
-    }
+    public void SetMoveSpeed(double speed) { moveSpeed = speed; }
 
-    public void SetNumHexes(int hexes) {
-        numHexes = hexes;
-    }
+    public void SetNumHexes(int hexes) { numHexes = hexes; }
 
-    public void SetHeight(int height) {
-        this.height = height;
-    }
+    public void SetHeight(int height) { this.height = height; }
 
-    public void SetCf(int cf) {
-        conFactor = cf;
-    }
+    public void SetCf(int cf) { conFactor = cf; }
 
     public void SetRange(int range) { this.range = range / 100; }
 
     public void SetName(String name) { this.name = name; }
 
+    public void SetArmor(int armor) { armorPoints = armor; }
+
 
     // Getters
-    public String GetClass() {
-        return strClass;
-    }
+    public String GetClass() { return strClass; }
 
-    public int GetCfMin() {
-        return cfMin;
-    }
+    public int GetCfMin() { return cfMin; }
 
-    public int GetCfMax() {
-        return cfMax;
-    }
+    public int GetCfMax() { return cfMax; }
 
     public int GetHexMax() { return hexMax; }
 
-    public int GetLevelMax() {
-        return levelMax;
-    }
+    public int GetLevelMax() { return levelMax; }
 
-    public double GetMoveMax() {
-        return moveMax;
-    }
+    public double GetMoveMax() { return moveMax; }
 
-    public int GetNumHexes() {
-        return numHexes;
-    }
+    public int GetNumHexes() { return numHexes; }
 
-    public int GetHeight() {
-        return height;
-    }
+    public int GetHeight() { return height; }
 
-    public int GetCf() {
-        return conFactor;
-    }
+    public int GetCf() { return conFactor; }
 
-    public int GetHexWeight() {
-        return hexWeight;
-    }
+    public int GetHexWeight() { return hexWeight; }
 
-    public int GetTotalWeight() {
-        return totalWeight;
-    }
+    public int GetTotalWeight() { return totalWeight; }
 
-    public String[] GetAvailableClasses() {
-        return availableClasses;
-    }
+    public String[] GetAvailableClasses() { return availableClasses; }
 
-    public int GetRange() {
-        return this.range * 100;
-    }
+    public int GetRange() { return this.range * 100; }
 
-    public double GetSpeed() {
-        return moveSpeed;
-    }
+    public double GetSpeed() { return moveSpeed; }
 
-    public double GetPowerWeight() {
-        return engineWeight;
-    }
+    public double GetPowerWeight() { return engineWeight; }
 
-    public double GetMotiveWeight() {
-        return motiveWeight;
-    }
+    public double GetMotiveWeight() { return motiveWeight; }
 
-    public double GetRemainingWeight() {
-        return remainingWeight;
-    }
+    public double GetRemainingWeight() { return remainingWeight; }
 
-    public int GetOfficers() {
-        return officers;
-    }
+    public int GetOfficers() { return officers; }
 
-    public int GetCrew() {
-        return crew;
-    }
+    public int GetCrew() { return crew; }
 
-    public double GetFuelWeight() {
-        return fuelWeight;
-    }
+    public double GetFuelWeight() { return fuelWeight; }
 
-    public String[] GetAvailableMotives() {
-        return availableMotives;
-    }
+    public String[] GetAvailableMotives() { return availableMotives; }
 
-    public String[] GetAvailableTypes() {
-        return availableTypes;
-    }
+    public String[] GetAvailableTypes() { return availableTypes; }
 
     public String GetMotive() { return motive; }
 
@@ -489,4 +464,8 @@ public class Structure implements Serializable {
     public String GetEngine() { return engine; }
 
     public String GetName() { return name; }
+
+    public int GetArmor() { return armorPoints; }
+
+    public double GetArmorWeight() { return armorWeight; }
 }

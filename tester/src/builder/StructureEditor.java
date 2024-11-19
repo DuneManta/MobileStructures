@@ -23,9 +23,10 @@ public class StructureEditor extends JFrame {
     private JSpinner structureSize;
     private JSpinner conFactor;
     private JSpinner movement;
+    private JSpinner armor;
     private JLabel hexWeight;
     private JLabel crew;
-    private JLabel totalWeight;
+    private JLabel armorWeight;
     private JLabel powerWeight;
     private JLabel motiveWeight;
     private JLabel remainingWeight;
@@ -52,6 +53,7 @@ public class StructureEditor extends JFrame {
             if (structureType.getSelectedItem() == "Fortress" && motive.getSelectedItem() == "Air") {
                 userStructure.SetMotive("Ground");
             }
+            ArmorToggle();
             Calculate();
         }
     };
@@ -108,8 +110,8 @@ public class StructureEditor extends JFrame {
     ActionListener powerBox = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            FuelToggle();
             userStructure.SetEngine((String) powerSystem.getSelectedItem());
+            FuelToggle();
             Calculate();
         }
     };
@@ -141,6 +143,15 @@ public class StructureEditor extends JFrame {
         }
     };
 
+    // Listener for armor
+    ChangeListener armorSpin = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            userStructure.SetArmor((Integer) armor.getValue());
+            Calculate();
+        }
+    };
+
 
     public StructureEditor() {
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -153,6 +164,7 @@ public class StructureEditor extends JFrame {
         pack();
         setJMenuBar(menuBar());
         //setLocationRelativeTo(null);
+        ArmorToggle();
         Calculate();
         CreateTable();
 
@@ -172,6 +184,7 @@ public class StructureEditor extends JFrame {
         conFactor.addChangeListener(cfSpin);
         fuel.addChangeListener(fuelSpin);
         movement.addChangeListener(moveSpin);
+        armor.addChangeListener(armorSpin);
     }
 
     // Function to remove listeners
@@ -186,6 +199,7 @@ public class StructureEditor extends JFrame {
         conFactor.removeChangeListener(cfSpin);
         fuel.removeChangeListener(fuelSpin);
         movement.removeChangeListener(moveSpin);
+        armor.removeChangeListener(armorSpin);
     }
 
 
@@ -197,6 +211,17 @@ public class StructureEditor extends JFrame {
         fuelWeight.setVisible(engine == "Steam" || engine == "Internal Combustion (ICE)" || engine == "Fuel Cell");
         if (!(engine == "Steam" || engine == "Internal Combustion (ICE)" || engine == "Fuel Cell")) {
             userStructure.SetRange(0);
+        }
+    }
+
+    // Enable or disable armor spinner based on type
+    private void ArmorToggle() {
+        Object type = structureType.getSelectedItem();
+        armor.setEnabled(type == "Fortress");
+        armorWeightLabel.setVisible(type == "Fortress");
+        armorWeight.setVisible(type == "Fortress");
+        if (!(type == "Fortress")) {
+            userStructure.SetArmor(0);
         }
     }
 
@@ -263,6 +288,9 @@ public class StructureEditor extends JFrame {
         // Spinner for movement
         movement.setModel(new SpinnerNumberModel(speedValue, 0, userStructure.GetMoveMax(), 0.25));
 
+        // Spinner for armor
+        armor.setModel(new SpinnerNumberModel(userStructure.GetArmor(), 0, userStructure.GetCf(), 1));
+
         // Combo box for class
         structureClass.setModel(new DefaultComboBoxModel(userStructure.GetAvailableClasses()));
         structureClass.setSelectedItem(userStructure.GetClass());
@@ -288,7 +316,6 @@ public class StructureEditor extends JFrame {
 
     public void SetFields() {
         hexWeight.setText(userStructure.GetHexWeight() + " Tons");
-        totalWeight.setText(userStructure.GetTotalWeight() + " Tons");
         powerWeight.setText(userStructure.GetPowerWeight() + " Tons");
         motiveWeight.setText(userStructure.GetMotiveWeight() + " Tons");
         remainingWeight.setText(userStructure.GetRemainingWeight() + " Tons");
@@ -297,6 +324,7 @@ public class StructureEditor extends JFrame {
         fuelWeight.setText(String.format(String.format("%.1f", userStructure.GetFuelWeight())) + " Tons");
         powerPerHex.setText(userStructure.GetPowerPerHex() + " Tons per hex");
         motivePerHex.setText(userStructure.GetMotivePerHex() + " Tons per hex");
+        armorWeight.setText(userStructure.GetArmorWeight() + " Tons per hex");
     }
 
     // Getter for object serialization
@@ -408,6 +436,7 @@ public class StructureEditor extends JFrame {
     private JButton addButton;
     private JTable equipmentList;
     private JTabbedPane tabContainer;
+    private JLabel armorWeightLabel;
 
     DefaultListModel<Object> leftModel = new DefaultListModel<>();
 
